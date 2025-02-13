@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "kubernetes-types": "^1.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "ts-loader": "^9.5.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "scripts": {
+    "build": "webpack"
+  }
+}

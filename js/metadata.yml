@@ -1,0 +1,15 @@
+rules:
+  - apiGroups:
+      - ""
+    apiVersions:
+      - v1
+    resources:
+      - pods
+    operations:
+      - CREATE
+      - UPDATE
+mutating: false
+contextAware: false
+executionMode: wasi
+annotations:
+  io.kubewarden.policy.title: js-demo-policy

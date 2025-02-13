@@ -1,0 +1,11 @@
+[package]
+edition = "2021"
+name = "javy-plugin-kubewarden"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"]
+name = "javy_plugin_kubewarden"
+
+[dependencies]
+javy-plugin-api = "3.0"
