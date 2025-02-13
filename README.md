@@ -1,3 +1,6 @@
+[![Sandbox](https://img.shields.io/badge/status-sandbox-red?style=for-the-badge)](https://github.com/kubewarden/community/blob/main/REPOSITORIES.md#sandbox)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache2.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+
 > **Warning:** This is a demo policy that demonstrates the possibility of writing
 > Kubewarden policies using TypeScript.
 > 
