@@ -2,9 +2,11 @@ on:
   push:
     paths:
       - 'javy-plugin-kubewarden/**'
+      - '.github/workflows/**'
   pull_request:
     paths:
       - 'javy-plugin-kubewarden/**'
+      - '.github/workflows/**'
 
 name: Javy plugin
 jobs:
