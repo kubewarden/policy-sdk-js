@@ -30,11 +30,14 @@ export function readInput(): Uint8Array {
   }
 
   // Assemble input into a single Uint8Array
-  const { finalBuffer } = inputChunks.reduce((context, chunk) => {
-    context.finalBuffer.set(chunk, context.bufferOffset);
-    context.bufferOffset += chunk.length;
-    return context;
-  }, { finalBuffer: new Uint8Array(totalBytes), bufferOffset: 0 });
+  const { finalBuffer } = inputChunks.reduce(
+    (context, chunk) => {
+      context.finalBuffer.set(chunk, context.bufferOffset);
+      context.bufferOffset += chunk.length;
+      return context;
+    },
+    { finalBuffer: new Uint8Array(totalBytes), bufferOffset: 0 },
+  );
 
   return finalBuffer;
 }
@@ -52,4 +55,3 @@ export function writeOutput(output: any) {
   const fd = 1;
   Javy.IO.writeSync(fd, buffer);
 }
-

@@ -1,5 +1,6 @@
-import { KubernetesAdmission } from "./admission";
-import { readInput } from "../protocol";
+import { readInput } from '../protocol';
+
+import type { KubernetesAdmission } from './admission';
 
 export namespace Validation {
   /**
@@ -76,7 +77,7 @@ export namespace Validation {
       code?: number,
       mutated_object?: string,
       audit_annotations?: { [key: string]: string },
-      warnings?: string[]
+      warnings?: string[],
     ) {
       this.accepted = accepted;
       this.message = message;
@@ -103,7 +104,7 @@ export namespace Validation {
 
     /**
      * Creates an instance of ValidationRequest.
-     * 
+     *
      * @param request - The admission request from Kubernetes.
      * @param settings - The settings for the validation request.
      */
