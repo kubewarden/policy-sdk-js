@@ -3,12 +3,40 @@
     "kubernetes-types": "^1.30.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.21.0",
     "@types/node": "^22.13.1",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsdoc": "^50.6.3",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.3",
     "ts-loader": "^9.5.2",
+    "typescript-eslint": "^8.26.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

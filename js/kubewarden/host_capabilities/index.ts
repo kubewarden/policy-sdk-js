@@ -1,10 +1,9 @@
-import { readInput } from "../../protocol";
+import { readInput } from '../../protocol';
 
 // this function is provided by the Kubewarden Javy plugin
-declare function __hostCall(binding: String, ns: String, op: String, payload: ArrayBuffer): boolean;
+declare function __hostCall(binding: string, ns: string, op: string, payload: ArrayBuffer): boolean;
 
 export namespace HostCall {
-
   /**
    * Makes a host call with the specified binding, namespace, operation, and payload.
    *
@@ -15,14 +14,19 @@ export namespace HostCall {
    * @returns {Uint8Array} - The response from the host call.
    * @throws {Error} - Throws an error if the host call is unsuccessful.
    */
-  export function hostCall(binding: string, ns: string, op: string, payload: ArrayBuffer): Uint8Array {
+  export function hostCall(
+    binding: string,
+    ns: string,
+    op: string,
+    payload: ArrayBuffer,
+  ): Uint8Array {
     const isSuccessful = __hostCall(binding, ns, op, payload);
     const response = readInput();
 
     if (!isSuccessful) {
-      const responseText = new TextDecoder("utf-8").decode(response);
-      console.error("Host call failed: ", responseText);
-      throw new Error("Host call failed");
+      const responseText = new TextDecoder('utf-8').decode(response);
+      console.error('Host call failed: ', responseText);
+      throw new Error('Host call failed');
     }
 
     return response;

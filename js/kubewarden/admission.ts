@@ -1,7 +1,7 @@
 /**
  * This namespace contains the types representing the objects used by
  * Kubernetes Admission Webhooks.
- * 
+ *
  * These types are not part of the openapi spec, hence they are not
  * automatically generated.
  */
@@ -10,10 +10,10 @@ export namespace KubernetesAdmission {
 
   /**
    * Represents an admission request in Kubernetes.
-   * 
+   *
    * @remarks
    * This class encapsulates the details of an admission request sent to the Kubernetes API server.
-   * 
+   *
    * @param uid - A unique identifier for the request.
    * @param kind - The kind of the resource being accessed.
    * @param resource - The resource being accessed.
@@ -80,12 +80,12 @@ export namespace KubernetesAdmission {
 
   /**
    * Represents a Kubernetes GroupVersionKind (GVK).
-   * 
+   *
    * A GVK is a tuple that uniquely identifies the schema of an object in Kubernetes.
-   * 
+   *
    * @remarks
    * The GroupVersionKind is used to specify the API group, version, and kind of a Kubernetes resource.
-   * 
+   *
    * @example
    * ```typescript
    * const gvk = new GroupVersionKind("apps", "v1", "Deployment");
@@ -93,7 +93,7 @@ export namespace KubernetesAdmission {
    * console.log(gvk.version); // "v1"
    * console.log(gvk.kind); // "Deployment"
    * ```
-   * 
+   *
    * @public
    */
   export class GroupVersionKind {
@@ -110,9 +110,9 @@ export namespace KubernetesAdmission {
 
   /**
    * Represents a Kubernetes GroupVersionResource (GVR).
-   * 
+   *
    * A GVR is a tuple that uniquely identifies a resource in the Kubernetes API.
-   * 
+   *
    * @example
    * ```typescript
    * const gvr = new GroupVersionResource('apps', 'v1', 'deployments');
@@ -120,7 +120,7 @@ export namespace KubernetesAdmission {
    * console.log(gvr.version); // 'v1'
    * console.log(gvr.resource); // 'deployments'
    * ```
-   * 
+   *
    * @public
    */
   export class GroupVersionResource {
@@ -161,7 +161,7 @@ export namespace KubernetesAdmission {
 
     /**
      * Creates an instance of UserInfo.
-     * 
+     *
      * @param username - The username of the user.
      * @param uid - The unique identifier of the user.
      * @param groups - The groups the user belongs to.
@@ -171,7 +171,7 @@ export namespace KubernetesAdmission {
       username?: string,
       uid?: string,
       groups?: string[],
-      extra?: { [key: string]: ExtraValue }
+      extra?: { [key: string]: ExtraValue },
     ) {
       this.username = username;
       this.uid = uid;
