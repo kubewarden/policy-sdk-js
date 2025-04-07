@@ -5,9 +5,9 @@ export namespace Network {
    * Represents the response of a DNS lookup operation.
    */
   export class DnsLookupResponse {
-    ips: [string];
+    ips: string[];
 
-    constructor(ips: [string]) {
+    constructor(ips: string[]) {
       this.ips = ips;
     }
   }
