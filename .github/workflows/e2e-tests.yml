@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies
-        uses: kubewarden/github-actions/policy-gh-action-dependencies@v4.3.0
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@v4.4.0
       - name: Install javy
         shell: bash
         run: |
