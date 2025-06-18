@@ -1,5 +1,13 @@
 #!/usr/bin/env bats
 
+@test "should return valid digest for busybox:1.36" {
+    run kwctl run --allow-context-aware --replay-host-capabilities-interactions replay-session.yml annotated-policy.wasm -r ./test_data/no_privileged_containers.json
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
+    [ $(expr "$output" : '.*"digest":"sha256:7edf5efe6b86dbf01ccc3c76b32a37a8e23b84e6bad81ce8ae8c221fa456fda8".*') -ne 0 ]
+}
+
 @test "reject creation of privileged pods everywhere when no setting is provided" {
   run kwctl run annotated-policy.wasm -r ./test_data/privileged-pod-default.json
 
