@@ -23,6 +23,8 @@ function validate() {
   const validationRequest = Validation.readValidationRequest();
   const settings = validationRequest.settings as PolicySetttings;
 
+  const image = "docker.io/library/busybox:1.36";
+      const digest = ManifestDigest.getOCIManifestDigest(image);  
   const ips = Network.dnsLookup('google.com').ips.join(', ');
   const annotations = {
     ips: ips,
