@@ -3,14 +3,14 @@
 
 > **Warning:** This is a demo policy that demonstrates the possibility of writing
 > Kubewarden policies using TypeScript.
-> 
+>
 > The policy is experimental, and the codebase needs to be cleaned to separate the
 > TypeScript SDK from the actual policy.
 
 The policy is written using TypeScript, which is then transpiled to JavaScript,
 which is finally compiled to WebAssembly.
 
-The Javascript to WebAssembly compilation is done using the 
+The Javascript to WebAssembly compilation is done using the
 [Javy](https://github.com/bytecodealliance/javy) project from the
 Bytecode Alliance.
 
@@ -34,6 +34,7 @@ The policy requires the following tools to be installed on the host machine:
 - **npm**: Required to install the project dependencies.
 - **[Javy](https://github.com/bytecodealliance/javy/releases)**: The compiler
   that transforms the JavaScript code into a WebAssembly module.
+- `clang`: required to build the quickjs related Rust crates.
 - **[kwctl](https://github.com/kubewarden/kwctl/)**: Required to run the
   final policy.
 - **[`bats`](https://github.com/bats-core/bats-core)**: Required to run
