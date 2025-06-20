@@ -17,13 +17,6 @@ interface Platform {
     variant?: string;
 }
 
-const DescriptorEmptyJSON: Descriptor = {
-    mediaType: 'application/vnd.oci.empty.v1+json',
-    digest: 'sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a',
-    size: 2,
-    data: '{}',
-};
-
 interface ImageConfig {
     user?: string;
     exposedPorts?: Record<string, {}>;
