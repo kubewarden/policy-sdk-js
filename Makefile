@@ -10,3 +10,7 @@ build-policy:
 
 e2e-tests: all
 	$(MAKE) -C js e2e-tests
+
+clean:
+	$(MAKE) -C javy-plugin-kubewarden clean
+	$(MAKE) -C js clean
