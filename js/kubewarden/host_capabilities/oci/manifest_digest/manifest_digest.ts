@@ -7,7 +7,7 @@ import { HostCall } from "../..";
 export namespace ManifestDigest {
     /**
      * Computes the digest of the OCI object referenced by the image.
-     * @param {string} image - The image to be verified (e.g.: `registry.testing.lan/busybox:1.0.0`)
+     * @param {string} image - The image reference (e.g.: `registry.testing.lan/busybox:1.0.0`)
      * @returns {string} The image digest string
      * @throws {Error} If JSON serialization fails or the host call returns an error
      */
