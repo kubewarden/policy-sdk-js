@@ -1,9 +1,9 @@
 import type { Pod } from 'kubernetes-types/core/v1';
 
-import { Network } from './kubewarden/host_capabilities/network';
-import { Validation } from './kubewarden/validation';
-import { writeOutput } from './protocol';
-import { ManifestDigest } from './kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
+import { Network } from '../kubewarden/host_capabilities/network';
+import { Validation } from '../kubewarden/validation';
+import { writeOutput } from '../protocol';
+import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
 
 declare function policyAction(): string;
 

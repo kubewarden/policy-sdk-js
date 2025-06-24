@@ -15,5 +15,5 @@
   "include": [
     "*.ts",
     "kubewarden/**/*.ts"
-  ]
+, "demo_policy/main.ts"  ]
 }
