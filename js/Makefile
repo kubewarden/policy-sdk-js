@@ -14,6 +14,9 @@ annotated-policy.wasm: dist/policy.wasm metadata.yml
 e2e-tests: annotated-policy.wasm
 	bats e2e.bats
 
+unit-integration-tests:
+	npm run test
+
 clean:
 	rm -f dist/*
 	rm -f annotated-policy.wasm
