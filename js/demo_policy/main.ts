@@ -23,7 +23,7 @@ class PolicySettings {
  * Handles OCI manifest digest lookup success scenario
  */
 function handleOciManifestDigestSuccess(): Validation.ValidationResponse {
-  const image = 'docker.io/library/busybox:1.36';
+  const image = 'ghcr.io/kubewarden/kubectl:v1.31.0';
   let digest: string | null = null;
   try {
     digest = ManifestDigest.getOCIManifestDigest(image);
