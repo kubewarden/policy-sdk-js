@@ -31,5 +31,11 @@ jobs:
           cd js
           npm install
 
+      - name: Install crane
+        run: |
+          VERSION="v0.19.1"
+          curl -LO https://github.com/google/go-containerregistry/releases/download/${VERSION}/go-containerregistry_Linux_x86_64.tar.gz
+          sudo tar -xvzf go-containerregistry_Linux_x86_64.tar.gz -C /usr/local/bin crane
+
       - name: Run e2e tests
         run: make e2e-tests
