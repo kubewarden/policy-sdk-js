@@ -1,0 +1,7 @@
+- type: Exchange
+  request: |
+    !DNSLookupHost
+    host: invalid.nonexistent.tld
+  response:
+    type: Error
+    message: 'Failed to retrieve DNS lookup IPs: invalid domain'

@@ -1,0 +1,7 @@
+- type: Exchange
+  request: |
+    !OciManifestDigest
+    image: ghcr.io/kubewarden/kubectl:v1.31.0
+  response:
+    type: Success
+    payload: '{"digest":"sha256:8bc1e63847a71fc93cd49e30a5639d04f1f1c797bbb1b3f20f2d343fbf95bf15"}'
