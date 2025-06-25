@@ -1,11 +1,14 @@
 #!/usr/bin/env bats
 
-@test "should return valid digest for busybox:1.36" {
+@test "should return valid digest for kubectl image" {
+    local image="ghcr.io/kubewarden/kubectl:v1.31.0"
+    local expected_digest=$(crane digest "$image")
+    echo "Expected digest = $expected_digest"
     run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-digest-success"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-digest-lookup-success.yml
     echo "output = ${output}"
     [ "$status" -eq 0 ]
     [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
-    [ $(expr "$output" : '.*"digest":"sha256:7edf5efe6b86dbf01ccc3c76b32a37a8e23b84e6bad81ce8ae8c221fa456fda8".*') -ne 0 ]
+    [ $(expr "$output" : '.*"digest":"'$expected_digest'".*') -ne 0 ]
 }
 
 @test "should fail for nonexistent image" {
