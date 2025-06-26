@@ -1,4 +1,4 @@
-.PHONY: all build-plugin build-policy e2e-tests unit-integration-tests all-tests
+.PHONY: all build-plugin build-policy e2e-tests unit-tests all-tests
 
 all: build-plugin build-policy
 
@@ -11,10 +11,10 @@ build-policy:
 e2e-tests: all
 	$(MAKE) -C js e2e-tests
 
-unit-integration-tests:
-	$(MAKE) -C js unit-integration-tests
+unit-tests:
+	$(MAKE) -C js unit-tests
 
-all-tests: unit-integration-tests e2e-tests
+all-tests: unit-tests e2e-tests
 
 clean:
 	$(MAKE) -C javy-plugin-kubewarden clean
