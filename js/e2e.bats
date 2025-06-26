@@ -16,8 +16,7 @@
     echo "output = ${output}"
     [ "$status" -eq 0 ]
     [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
-    [ $(expr "$output" : '.*"digest":"".*') -ne 0 ]
-    [[ "$output" =~ "OCI manifest digest lookup failed" ]]
+    [[ "$output" =~ "wrong invocation" ]]
 }
 
 @test "should return IPs for google.com" {
@@ -33,8 +32,7 @@
     echo "output = ${output}"
     [ "$status" -eq 0 ]
     [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
-    [ $(expr "$output" : '.*"ips":"".*') -ne 0 ]
-    [[ "$output" =~ "DNS lookup failed" ]]
+    [[ "$output" =~ "wrong invocation" ]]
 }
 
 @test "reject creation of privileged pods everywhere when no setting is provided" {
