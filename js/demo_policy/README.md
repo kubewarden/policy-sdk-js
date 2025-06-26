@@ -14,22 +14,39 @@ This policy validates Kubernetes Pod admission requests and demonstrates several
 
 The policy has the following configuration:
 
-```json
-{
-  "ignoredNamespaces": ["kube-system", "kube-public"],
-  "testScenario": "dns-lookup-success"
-}
+```yaml
+ignoredNamespaces:
+  - kube-system
+  - kube-public
+
+# The testScenario setting is used to trigger specific test cases within the policy:
+# Possible values:
+#   - oci-manifest-digest-success: simulate a successful OCI manifest digest lookup
+#   - oci-manifest-digest-failure: simulate a failed OCI manifest digest lookup
+#   - dns-lookup-success: simulate a successful DNS lookup
+#   - dns-lookup-failure: simulate a failed DNS lookup
+# Leaving testScenario empty or omitted will run the default privileged container validation.
+
+testScenario: dns-lookup-success
 ```
 
 ## Usage
 
-Run the policy with `kwctl`:
+### Building and Running the Policy
+
+While inside the `js` directory, build the policy WASM module by running:
 
 ```console
-kwctl run ../js/annotated-policy.wasm -r test_data/no_privileged_containers.json
+make annotated-policy.wasm
+```
+
+This will produce a Kubewarden policy that can then be run with:
+
+```console
+kwctl run annotated-policy.wasm -r demo_policy/test_data/no_privileged_containers.json
 ```
 
 With settings:
 ```console
-kwctl run ../js/annotated-policy.wasm -r test_data/privileged-pod-kube-system.json --settings-json '{"ignoredNamespaces": ["kube-system"]}'
+kwctl run annotated-policy.wasm -r demo_policy/test_data/privileged-pod-kube-system.json --settings-json '{"ignoredNamespaces": ["kube-system"]}'
 ```
