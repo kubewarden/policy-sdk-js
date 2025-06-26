@@ -6,7 +6,7 @@ import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_dig
  * Handles OCI manifest digest lookup success scenario
  */
 export function handleOciManifestDigestSuccess(): Validation.ValidationResponse {
-const image = 'ghcr.io/kubewarden/kubectl:v1.31.0';
+const image = 'docker.io/library/busybox:1.36';
 const digest = ManifestDigest.getOCIManifestDigest(image);
 return new Validation.ValidationResponse(
   !!digest,
