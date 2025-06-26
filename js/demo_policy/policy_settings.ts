@@ -1,5 +1,4 @@
 import { Validation } from '../kubewarden/validation';
-import { writeOutput } from '../protocol';
 
 export class PolicySettings {
   ignoredNamespaces?: string[];
