@@ -21,6 +21,7 @@ policy type.
 The policy demonstrates that it's possible to perform validation and make use of
 [Kubewarden's host capabilities](https://docs.kubewarden.io/reference/spec/host-capabilities/intro-host-capabilities)
 during policy evaluation.
+
 ## Project Structure
 The project is organized into the following components:
 
@@ -44,12 +45,8 @@ The policy requires the following tools to be installed on the host machine:
 - **[kwctl](https://github.com/kubewarden/kwctl/)**: Required to run the
   final policy.
 - **[`bats`](https://github.com/bats-core/bats-core)**: Required to run
-  the end-to-end tests.
-
-## Testing
-This project uses **[`bats`](https://github.com/bats-core/bats-core)** for end-to-end testing. Install bats locally using the [official installation instructions](https://bats-core.readthedocs.io/en/stable/installation.html) 
-
-Unit and integration tests are done with **[`jest`](https://jestjs.io/docs/getting-started)**
+  the end-to-end tests. Install bats locally using the [official installation instructions](https://bats-core.readthedocs.io/en/stable/installation.html) 
+- **[`jest`](https://jestjs.io/docs/getting-started)**: Required to run unit tests.
 
 ## Building
 
@@ -62,7 +59,7 @@ make annotated-policy.wasm
 This will produce a Kubewarden policy that can then be run with:
 
 ```console
-kwctl run annotated-policy.wasm -r demo-policy/test_data/no_privileged_containers.json
+kwctl run annotated-policy.wasm -r demo_policy/test_data/no_privileged_containers.json
 ```
 
 The end to end tests can be run with:
