@@ -1,7 +1,7 @@
 - type: Exchange
   request: |
     !OciManifestDigest
-    image: ghcr.io/kubewarden/kubectl:v1.31.0
+    image: docker.io/library/busybox:1.36
   response:
     type: Success
-    payload: '{"digest":"sha256:8bc1e63847a71fc93cd49e30a5639d04f1f1c797bbb1b3f20f2d343fbf95bf15"}'
+    payload: '{"digest":"sha256:7edf5efe6b86dbf01ccc3c76b32a37a8e23b84e6bad81ce8ae8c221fa456fda8"}'
