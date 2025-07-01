@@ -66,14 +66,14 @@ export function handleDnsLookupFailure(): Validation.ValidationResponse {
  * Handles the default privileged container validation
  */
 export function handlePrivilegedContainerValidation(validationRequest: any, settings: PolicySettings): Validation.ValidationResponse {
-  const pod = JSON.parse(JSON.stringify(validationRequest.request.object)) as Pod;
-  const privileged =
-    pod.spec?.containers?.some(container => container.securityContext?.privileged) || false;
-
     if (settings.ignoredNamespaces?.includes(validationRequest.request.namespace || '')) {
       console.error('Privileged containers are allowed inside of ignored namespace');
       return Validation.acceptRequest();
     }
+    
+  const pod = JSON.parse(JSON.stringify(validationRequest.request.object)) as Pod;
+  const privileged =
+    pod.spec?.containers?.some(container => container.securityContext?.privileged) || false;
     if (privileged) {
       return Validation.rejectRequest('privileged containers are not allowed');
     }
