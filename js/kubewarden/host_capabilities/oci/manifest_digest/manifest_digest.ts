@@ -1,4 +1,4 @@
-import { OciManifestResponse } from "./types";
+import { OciManifestResponse } from "../types";
 import { HostCall } from "../..";
 
 /**
