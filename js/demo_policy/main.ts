@@ -1,4 +1,3 @@
-import type { Pod } from 'kubernetes-types/core/v1';
 import { Validation } from '../kubewarden/validation';
 import { writeOutput } from '../protocol';
 import { PolicySettings } from './policy_settings';
@@ -6,29 +5,11 @@ import {
   handleOciManifestDigestSuccess,
   handleOciManifestDigestFailure,
   handleDnsLookupSuccess,
-  handleDnsLookupFailure
+  handleDnsLookupFailure,
+  handlePrivilegedContainerValidation
 } from './test_scenarios';
 
 declare function policyAction(): string;
-
-/**
- * Handles the default privileged container validation
- */
-function handlePrivilegedContainerValidation(validationRequest: any, settings: PolicySettings): Validation.ValidationResponse {
-  const pod = JSON.parse(JSON.stringify(validationRequest.request.object)) as Pod;
-  const privileged =
-    pod.spec?.containers?.some(container => container.securityContext?.privileged) || false;
-
-    if (settings.ignoredNamespaces?.includes(validationRequest.request.namespace || '')) {
-      console.error('Privileged containers are allowed inside of ignored namespace');
-      return Validation.acceptRequest();
-    }
-    if (privileged) {
-      return Validation.rejectRequest('privileged containers are not allowed');
-    }
-    return Validation.acceptRequest();
-    
-}
 
 /**
  * Validates a Kubernetes admission request to ensure that privileged containers

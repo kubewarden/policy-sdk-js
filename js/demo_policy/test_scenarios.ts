@@ -1,6 +1,8 @@
 import { Network } from '../kubewarden/host_capabilities/network';
 import { Validation } from '../kubewarden/validation';
 import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
+import { PolicySettings } from './policy_settings';
+import type { Pod } from 'kubernetes-types/core/v1';
 
 /**
  * Handles OCI manifest digest lookup success scenario
@@ -58,4 +60,23 @@ export function handleDnsLookupFailure(): Validation.ValidationResponse {
     undefined,
     { ips: ips.join(', ') }
   );
+}
+
+/**
+ * Handles the default privileged container validation
+ */
+export function handlePrivilegedContainerValidation(validationRequest: any, settings: PolicySettings): Validation.ValidationResponse {
+  const pod = JSON.parse(JSON.stringify(validationRequest.request.object)) as Pod;
+  const privileged =
+    pod.spec?.containers?.some(container => container.securityContext?.privileged) || false;
+
+    if (settings.ignoredNamespaces?.includes(validationRequest.request.namespace || '')) {
+      console.error('Privileged containers are allowed inside of ignored namespace');
+      return Validation.acceptRequest();
+    }
+    if (privileged) {
+      return Validation.rejectRequest('privileged containers are not allowed');
+    }
+    return Validation.acceptRequest();
+    
 }
