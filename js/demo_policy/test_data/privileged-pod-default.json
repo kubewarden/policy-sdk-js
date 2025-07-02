@@ -25,10 +25,7 @@
   "operation": "CREATE",
   "userInfo": {
     "username": "kubernetes-admin",
-    "groups": [
-      "system:masters",
-      "system:authenticated"
-    ]
+    "groups": ["system:masters", "system:authenticated"]
   },
   "object": {
     "kind": "Pod",

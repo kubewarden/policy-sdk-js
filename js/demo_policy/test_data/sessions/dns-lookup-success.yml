@@ -4,4 +4,4 @@
     host: google.com
   response:
     type: Success
-    payload: '{"ips":["2607:f8b0:4020:801::200e","142.250.69.142"]}'  
+    payload: '{"ips":["2607:f8b0:4020:801::200e","142.250.69.142"]}'
