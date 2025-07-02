@@ -1,12 +1,13 @@
 import { Validation } from '../kubewarden/validation';
 import { writeOutput } from '../protocol';
+
 import { PolicySettings } from './policy_settings';
-import { 
+import {
   handleOciManifestDigestSuccess,
   handleOciManifestDigestFailure,
   handleDnsLookupSuccess,
   handleDnsLookupFailure,
-  handlePrivilegedContainerValidation
+  handlePrivilegedContainerValidation,
 } from './test_scenarios';
 
 declare function policyAction(): string;
@@ -24,21 +25,26 @@ function validate() {
   console.error('Settings:', JSON.stringify(settings));
 
   switch (settings.testScenario) {
-    case 'oci-manifest-digest-success':
+    case 'oci-manifest-digest-success': {
       response = handleOciManifestDigestSuccess();
       break;
-    case 'oci-manifest-digest-failure':
+    }
+    case 'oci-manifest-digest-failure': {
       response = handleOciManifestDigestFailure();
       break;
-    case 'dns-lookup-success':
+    }
+    case 'dns-lookup-success': {
       response = handleDnsLookupSuccess();
       break;
-    case 'dns-lookup-failure':
+    }
+    case 'dns-lookup-failure': {
       response = handleDnsLookupFailure();
       break;
-    default:
+    }
+    default: {
       response = handlePrivilegedContainerValidation(validationRequest, settings);
       break;
+    }
   }
 
   writeOutput(response);
@@ -51,7 +57,7 @@ function validateSettings() {
     const response = settings.validate();
     writeOutput(response);
   } catch (err) {
-    console.error("validateSettings error:", err);
+    console.error('validateSettings error:', err);
     const response = new Validation.SettingsValidationResponse(false, `${err}`);
     writeOutput(response);
   }
@@ -61,17 +67,20 @@ try {
   const action = policyAction();
   console.error('Action:', action);
 
-  switch(action) {
-    case 'validate':
+  switch (action) {
+    case 'validate': {
       validate();
       break;
-    case 'validate-settings':
+    }
+    case 'validate-settings': {
       validateSettings();
       break;
-    default:
+    }
+    default: {
       console.error('Unknown action:', action);
       const response = new Validation.ValidationResponse(false, 'wrong invocation');
       writeOutput(response);
+    }
   }
 } catch (error) {
   console.error('error:', error);

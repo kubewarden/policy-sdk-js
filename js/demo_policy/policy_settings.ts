@@ -15,9 +15,9 @@ export class PolicySettings {
       'dns-lookup-failure',
     ];
 
-    if(this.testScenario && !knownScenarios.includes(this.testScenario)){
+    if (this.testScenario && !knownScenarios.includes(this.testScenario)) {
       throw new Error(`Unknown testScenario: ${this.testScenario}`);
-    }; 
+    }
   }
 
   /**
