@@ -1,4 +1,6 @@
 import type { Pod } from 'kubernetes-types/core/v1';
+import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
+import { OciImageManifestResponse } from '../kubewarden/host_capabilities/oci/manifest/types';
 
 import { Network } from '../kubewarden/host_capabilities/network';
 import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
@@ -61,6 +63,56 @@ export function handleDnsLookupFailure(): Validation.ValidationResponse {
     undefined,
     undefined,
     { ips: ips.join(', ') },
+  );
+}
+
+/**
+ * Handles OCI manifest lookup success scenario
+ */
+export function handleOciManifestSuccess(): Validation.ValidationResponse {
+  const image = 'docker.io/library/busybox:1.36';
+  let manifest: OciImageManifestResponse | null = null;
+  try {
+    manifest = Manifest.getOCIManifest(image);
+  } catch (e) {
+    console.error('OCI manifest lookup failed:', e);
+  }
+  const manifestType = manifest?.image ? 'image' : manifest?.index ? 'index' : '';
+  return new Validation.ValidationResponse(
+    !!manifest && manifestType !== '',
+    manifestType ? undefined : 'Failed to retrieve OCI manifest',
+    undefined,
+    undefined,
+    { manifestType }
+  );
+}
+
+/**
+ * Handles OCI manifest lookup failure scenario
+ */
+export function handleOciManifestFailure(): Validation.ValidationResponse {
+  const image = 'registry.testing.lan/nonexistent-image:1.0.0';
+  let manifest: OciImageManifestResponse | null = null;
+  try {
+    manifest = Manifest.getOCIManifest(image);
+  } catch (e) {
+    console.error('OCI manifest lookup failed:', e);
+    return new Validation.ValidationResponse(
+      false,
+      `OCI manifest lookup failed: ${e}`,
+      undefined,
+      undefined,
+      { manifestType: '' }
+    );
+  }
+  // If manifest is retrieved, treat as failure
+  const manifestType = manifest?.image ? 'image' : manifest?.index ? 'index' : '';
+  return new Validation.ValidationResponse(
+    false,
+    'Unexpectedly retrieved OCI manifest',
+    undefined,
+    undefined,
+    { manifestType }
   );
 }
 

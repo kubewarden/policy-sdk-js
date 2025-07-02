@@ -7,6 +7,8 @@ import {
   handleOciManifestDigestFailure,
   handleDnsLookupSuccess,
   handleDnsLookupFailure,
+  handleOciManifestFailure,
+  handleOciManifestSuccess,
   handlePrivilegedContainerValidation,
 } from './test_scenarios';
 
@@ -39,6 +41,14 @@ function validate() {
     }
     case 'dns-lookup-failure': {
       response = handleDnsLookupFailure();
+      break;
+    }
+    case 'oci-manifest-success': {
+      response = handleOciManifestSuccess();
+      break;
+    }
+    case 'oci-manifest-failure': {
+      response = handleOciManifestFailure();
       break;
     }
     default: {
