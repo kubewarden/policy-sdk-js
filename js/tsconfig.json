@@ -4,7 +4,7 @@
     "target": "ES6",
     "outDir": "./dist",
     "types": [
-      "node"
+      "jest", "node"
     ],
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
@@ -15,5 +15,5 @@
   "include": [
     "*.ts",
     "kubewarden/**/*.ts"
-  ]
+, "demo_policy/main.ts"  ]
 }
