@@ -1,5 +1,22 @@
 #!/usr/bin/env bats
 
+@test "should return valid manifest for busybox:1.36" {
+    run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-success"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-lookup-success.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
+    [ $(expr "$output" : '.*"manifestType":"image".*') -ne 0 ]
+}
+
+@test "should fail for nonexistent image manifest" {
+    run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-failure"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-lookup-failure.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
+    [ $(expr "$output" : '.*"manifestType":"".*') -ne 0 ]
+    [[ "$output" =~ "OCI manifest lookup failed" ]]
+}
+
 @test "should return valid digest for busybox:1.36" {
     run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-digest-success"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-digest-lookup-success.yml
     echo "output = ${output}"
