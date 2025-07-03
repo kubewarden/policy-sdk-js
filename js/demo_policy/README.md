@@ -6,8 +6,8 @@ This is a sample Kubewarden policy written in TypeScript that demonstrates the c
 
 This policy validates Kubernetes Pod admission requests and demonstrates several key features:
 
-- **Privileged Container Validation**: Rejects pods with privileged containers unless they're in an ignored namespace  
-- **Host Capabilities Integration**: Shows how to use Kubewarden's host capabilities. More specifically it uses the [OCI manifest digest capability](https://docs.kubewarden.io/reference/spec/host-capabilities/container-registry#get-oci-manifest-digest)  and the [DNS lookup capability](https://docs.kubewarden.io/reference/spec/host-capabilities/net#dns-host-lookup)
+- **Privileged Container Validation**: Rejects pods with privileged containers unless they're in an ignored namespace
+- **Host Capabilities Integration**: Shows how to use Kubewarden's host capabilities. More specifically it uses the [OCI manifest digest capability](https://docs.kubewarden.io/reference/spec/host-capabilities/container-registry#get-oci-manifest-digest) and the [DNS lookup capability](https://docs.kubewarden.io/reference/spec/host-capabilities/net#dns-host-lookup)
 - **Configurable Settings**: Supports runtime configuration through policy settings
 
 ## Configuration
@@ -47,6 +47,7 @@ kwctl run annotated-policy.wasm -r demo_policy/test_data/no_privileged_container
 ```
 
 With settings:
+
 ```console
 kwctl run annotated-policy.wasm -r demo_policy/test_data/privileged-pod-kube-system.json --settings-json '{"ignoredNamespaces": ["kube-system"]}'
 ```

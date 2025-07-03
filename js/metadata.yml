@@ -1,6 +1,6 @@
 rules:
   - apiGroups:
-      - ""
+      - ''
     apiVersions:
       - v1
     resources:
