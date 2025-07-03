@@ -1,7 +1,6 @@
 import { HostCall } from '../..';
 
-import type { OciImageManifestResponse } from './types';
-import { OciImageManifestResponseImpl } from './types';
+import { OciImageManifestResponse } from './types';
 
 /**
  * Namespace for OCI manifest operations.
@@ -30,7 +29,7 @@ export namespace Manifest {
     const responsePayload = HostCall.hostCall('kubewarden', 'oci', 'v1/oci_manifest', payload);
     try {
       const responseString = new TextDecoder().decode(responsePayload);
-      return OciImageManifestResponseImpl.fromJSON(responseString);
+      return OciImageManifestResponse.fromJSON(responseString);
     } catch (err) {
       throw new Error(`Cannot parse response: ${err}`);
     }

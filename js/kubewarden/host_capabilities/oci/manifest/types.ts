@@ -2,12 +2,7 @@ import { constants } from '../../../constants/constants';
 import type { Manifest, Index } from '../oci-spec';
 import { MediaTypeImageIndex, MediaTypeImageManifest } from '../oci-spec';
 
-export interface OciImageManifestResponse {
-  image?: Manifest;
-  index?: Index;
-}
-
-export class OciImageManifestResponseImpl implements OciImageManifestResponse {
+export class OciImageManifestResponse {
   image?: Manifest;
   index?: Index;
 
@@ -24,20 +19,20 @@ export class OciImageManifestResponseImpl implements OciImageManifestResponse {
     return this.index;
   }
 
-  static fromJSON(json: string): OciImageManifestResponseImpl {
+  static fromJSON(json: string): OciImageManifestResponse {
     try {
       const data = JSON.parse(json);
       // Check if data has image or index field
       if ('image' in data) {
         const imageManifest = data.image as Manifest;
         if (imageManifest.mediaType && isImageMediaType(imageManifest.mediaType)) {
-          return new OciImageManifestResponseImpl({ image: imageManifest });
+          return new OciImageManifestResponse({ image: imageManifest });
         }
       }
       if ('index' in data) {
         const indexManifest = data.index as Index;
         if (indexManifest.mediaType && isImageIndexMediaType(indexManifest.mediaType)) {
-          return new OciImageManifestResponseImpl({ index: indexManifest });
+          return new OciImageManifestResponse({ index: indexManifest });
         }
       }
       throw new Error('Cannot decode response');
