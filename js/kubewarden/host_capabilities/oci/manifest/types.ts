@@ -1,9 +1,10 @@
-import { Manifest, Index, MediaTypeImageIndex, MediaTypeImageManifest } from "../oci-spec";
-import { constants } from "../../../constants/constants";
+import { constants } from '../../../constants/constants';
+import type { Manifest, Index } from '../oci-spec';
+import { MediaTypeImageIndex, MediaTypeImageManifest } from '../oci-spec';
 
-export interface OciImageManifestResponse { 
-    image?: Manifest;
-    index?: Index;
+export interface OciImageManifestResponse {
+  image?: Manifest;
+  index?: Index;
 }
 
 export class OciImageManifestResponseImpl implements OciImageManifestResponse {
@@ -11,12 +12,12 @@ export class OciImageManifestResponseImpl implements OciImageManifestResponse {
   index?: Index;
 
   constructor(data: Partial<OciImageManifestResponse> = {}) {
-      this.image = data.image;
-      this.index = data.index;
+    this.image = data.image;
+    this.index = data.index;
   }
 
   imageManifest(): Manifest | undefined {
-      return this.image;
+    return this.image;
   }
 
   indexManifest(): Index | undefined {
@@ -40,23 +41,16 @@ export class OciImageManifestResponseImpl implements OciImageManifestResponse {
         }
       }
       throw new Error('Cannot decode response');
-    } catch (e) {
+    } catch {
       throw new Error('Cannot decode response');
     }
   }
 }
 
 function isImageIndexMediaType(mediaType: string): boolean {
-  return (
-    mediaType === MediaTypeImageIndex ||
-    mediaType === constants.ImageManifestListMediaType
-  );
+  return mediaType === MediaTypeImageIndex || mediaType === constants.ImageManifestListMediaType;
 }
 
 function isImageMediaType(mediaType: string): boolean {
-  return (
-    mediaType === MediaTypeImageManifest ||
-    mediaType === constants.ImageManifestMediaType
-  );
+  return mediaType === MediaTypeImageManifest || mediaType === constants.ImageManifestMediaType;
 }
-

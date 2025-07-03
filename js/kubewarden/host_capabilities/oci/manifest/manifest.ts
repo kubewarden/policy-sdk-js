@@ -1,5 +1,7 @@
 import { HostCall } from '../..';
-import { OciImageManifestResponse, OciImageManifestResponseImpl } from './types';
+
+import type { OciImageManifestResponse } from './types';
+import { OciImageManifestResponseImpl } from './types';
 
 /**
  * Namespace for OCI manifest operations.

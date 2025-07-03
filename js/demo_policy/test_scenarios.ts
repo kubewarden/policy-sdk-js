@@ -1,8 +1,8 @@
 import type { Pod } from 'kubernetes-types/core/v1';
-import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
-import { OciImageManifestResponse } from '../kubewarden/host_capabilities/oci/manifest/types';
 
 import { Network } from '../kubewarden/host_capabilities/network';
+import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
+import type { OciImageManifestResponse } from '../kubewarden/host_capabilities/oci/manifest/types';
 import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
 import { Validation } from '../kubewarden/validation';
 
@@ -83,7 +83,7 @@ export function handleOciManifestSuccess(): Validation.ValidationResponse {
     manifestType ? undefined : 'Failed to retrieve OCI manifest',
     undefined,
     undefined,
-    { manifestType }
+    { manifestType },
   );
 }
 
@@ -102,7 +102,7 @@ export function handleOciManifestFailure(): Validation.ValidationResponse {
       `OCI manifest lookup failed: ${e}`,
       undefined,
       undefined,
-      { manifestType: '' }
+      { manifestType: '' },
     );
   }
   // If manifest is retrieved, treat as failure
@@ -112,7 +112,7 @@ export function handleOciManifestFailure(): Validation.ValidationResponse {
     'Unexpectedly retrieved OCI manifest',
     undefined,
     undefined,
-    { manifestType }
+    { manifestType },
   );
 }
 
