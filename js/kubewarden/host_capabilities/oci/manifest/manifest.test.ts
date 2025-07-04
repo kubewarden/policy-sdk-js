@@ -1,6 +1,13 @@
+import { constants } from '../../../constants/constants';
 import * as HostCall from '../../index';
-import type { Index } from '../oci-spec';
-import type { Manifest as OciManifestType } from '../oci-spec';
+import type { Index, Manifest as OciManifestType } from '../oci-spec';
+import {
+  MediaTypeImageIndex,
+  MediaTypeImageManifest,
+  MediaTypeImageConfig,
+  MediaTypeDescriptor,
+  MediaTypeImageLayer,
+} from '../oci-spec';
 
 import { Manifest } from './manifest';
 import { OciImageManifestResponse } from './types';
@@ -32,7 +39,7 @@ function buildImageManifest(mediaType: string): { image: OciManifestType } {
       schemaVersion: 2,
       mediaType: mediaType,
       config: {
-        mediaType: 'application/vnd.oci.image.config.v1+json',
+        mediaType: MediaTypeImageConfig,
         digest: 'sha256:mydummydigest',
         size: 1024,
       },
@@ -48,7 +55,7 @@ function buildIndexManifest(mediaType: string): { index: Index } {
       mediaType: mediaType,
       manifests: [
         {
-          mediaType: 'application/vnd.oci.image.manifest.v1+json',
+          mediaType: MediaTypeImageManifest,
           digest: 'sha256:mydummydigest',
           size: 1024,
           platform: {
@@ -77,55 +84,55 @@ describe('Manifest Unit Tests', () => {
     // Valid image manifest media types
     {
       name: 'OCI image manifest',
-      manifest: buildImageManifest('application/vnd.oci.image.manifest.v1+json'),
+      manifest: buildImageManifest(MediaTypeImageManifest),
       failsBecauseUnknownMediaType: false,
     },
     {
       name: 'Docker image manifest',
-      manifest: buildImageManifest('application/vnd.docker.distribution.manifest.v2+json'),
+      manifest: buildImageManifest(constants.ImageManifestMediaType),
       failsBecauseUnknownMediaType: false,
     },
     // Valid index manifest media types
     {
       name: 'OCI image index',
-      manifest: buildIndexManifest('application/vnd.oci.image.index.v1+json'),
+      manifest: buildIndexManifest(MediaTypeImageIndex),
       failsBecauseUnknownMediaType: false,
     },
     {
       name: 'Docker manifest list',
-      manifest: buildIndexManifest('application/vnd.docker.distribution.manifest.list.v2+json'),
+      manifest: buildIndexManifest(constants.ImageManifestListMediaType),
       failsBecauseUnknownMediaType: false,
     },
     // Invalid media types for image manifest
     {
       name: 'Invalid media type - descriptor',
-      manifest: buildImageManifest('application/vnd.oci.descriptor.v1+json'),
+      manifest: buildImageManifest(MediaTypeDescriptor),
       failsBecauseUnknownMediaType: true,
     },
     {
       name: 'Invalid media type - config',
-      manifest: buildImageManifest('application/vnd.oci.image.config.v1+json'),
+      manifest: buildImageManifest(MediaTypeImageConfig),
       failsBecauseUnknownMediaType: true,
     },
     {
       name: 'Invalid media type - layer',
-      manifest: buildImageManifest('application/vnd.oci.image.layer.v1.tar+gzip'),
+      manifest: buildImageManifest(MediaTypeImageLayer),
       failsBecauseUnknownMediaType: true,
     },
     // Invalid media types for index manifest
     {
       name: 'Invalid index media type - descriptor',
-      manifest: buildIndexManifest('application/vnd.oci.descriptor.v1+json'),
+      manifest: buildIndexManifest(MediaTypeDescriptor),
       failsBecauseUnknownMediaType: true,
     },
     {
       name: 'Invalid index media type - config',
-      manifest: buildIndexManifest('application/vnd.oci.image.config.v1+json'),
+      manifest: buildIndexManifest(MediaTypeImageConfig),
       failsBecauseUnknownMediaType: true,
     },
     {
       name: 'Invalid index media type - layer',
-      manifest: buildIndexManifest('application/vnd.oci.image.layer.v1.tar+gzip'),
+      manifest: buildIndexManifest(MediaTypeImageLayer),
       failsBecauseUnknownMediaType: true,
     },
   ];

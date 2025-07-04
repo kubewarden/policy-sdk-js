@@ -78,3 +78,5 @@ export interface Config {
 export const MediaTypeImageIndex = 'application/vnd.oci.image.index.v1+json';
 export const MediaTypeImageManifest = 'application/vnd.oci.image.manifest.v1+json';
 export const MediaTypeImageConfig = 'application/vnd.oci.image.config.v1+json';
+export const MediaTypeDescriptor = 'application/vnd.oci.descriptor.v1+json';
+export const MediaTypeImageLayer = 'application/vnd.oci.image.layer.v1.tar+gzip';
