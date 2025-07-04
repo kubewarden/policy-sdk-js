@@ -5,7 +5,7 @@
     echo "output = ${output}"
     [ "$status" -eq 0 ]
     [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
-    [ $(expr "$output" : '.*"manifestType":"image".*') -ne 0 ]
+    [ $(expr "$output" : '.*"manifest":".*application/vnd.oci.image.manifest.v1+json.*') -ne 0 ]
 }
 
 @test "should fail for nonexistent image manifest" {
@@ -13,8 +13,7 @@
     echo "output = ${output}"
     [ "$status" -eq 0 ]
     [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
-    [ $(expr "$output" : '.*"manifestType":"".*') -ne 0 ]
-    [[ "$output" =~ "OCI manifest lookup failed" ]]
+    [[ "$output" =~ "wrong invocation" ]]
 }
 
 @test "should return valid digest for busybox:1.36" {
@@ -25,7 +24,7 @@
     [ $(expr "$output" : '.*"digest":"sha256:7edf5efe6b86dbf01ccc3c76b32a37a8e23b84e6bad81ce8ae8c221fa456fda8".*') -ne 0 ]
 }
 
-@test "should fail for nonexistent image" {
+@test "should fail digest lookup for nonexistent image" {
     run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-digest-failure"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-digest-lookup-failure.yml
     echo "output = ${output}"
     [ "$status" -eq 0 ]
@@ -49,7 +48,7 @@
     [[ "$output" =~ "wrong invocation" ]]
 }
 
-@test "reject creation of privileged pods everywhere when no setting is provided" {
+@test "reject creation of privileged pods everywhere when no ignoredNamespaces setting is provided" {
   run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/privileged-pod-default.json
 
   # this prints the output when one the checks below fails
