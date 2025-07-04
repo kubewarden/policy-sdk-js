@@ -1,4 +1,6 @@
 import * as HostCall from '../../index';
+import type { Index } from '../oci-spec';
+import type { Manifest as OciManifestType } from '../oci-spec';
 
 import { Manifest } from './manifest';
 import { OciImageManifestResponse } from './types';
@@ -24,7 +26,7 @@ class MockWasmHost {
   }
 }
 
-function buildImageManifest(mediaType: string) {
+function buildImageManifest(mediaType: string): { image: OciManifestType } {
   return {
     image: {
       schemaVersion: 2,
@@ -39,7 +41,7 @@ function buildImageManifest(mediaType: string) {
   };
 }
 
-function buildIndexManifest(mediaType: string) {
+function buildIndexManifest(mediaType: string): { index: Index } {
   return {
     index: {
       schemaVersion: 2,
