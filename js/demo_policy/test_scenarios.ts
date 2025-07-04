@@ -2,7 +2,6 @@ import type { Pod } from 'kubernetes-types/core/v1';
 
 import { Network } from '../kubewarden/host_capabilities/network';
 import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
-import type { OciImageManifestResponse } from '../kubewarden/host_capabilities/oci/manifest/types';
 import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
 import { Validation } from '../kubewarden/validation';
 
@@ -71,19 +70,13 @@ export function handleDnsLookupFailure(): Validation.ValidationResponse {
  */
 export function handleOciManifestSuccess(): Validation.ValidationResponse {
   const image = 'docker.io/library/busybox:1.36';
-  let manifest: OciImageManifestResponse | null = null;
-  try {
-    manifest = Manifest.getOCIManifest(image);
-  } catch (e) {
-    console.error('OCI manifest lookup failed:', e);
-  }
-  const manifestType = manifest?.image ? 'image' : manifest?.index ? 'index' : '';
+  const manifest = Manifest.getOCIManifest(image);
   return new Validation.ValidationResponse(
-    !!manifest && manifestType !== '',
-    manifestType ? undefined : 'Failed to retrieve OCI manifest',
+    !!manifest,
+    manifest ? undefined : 'Failed to retrieve OCI manifest',
     undefined,
     undefined,
-    { manifestType },
+    { manifest: manifest ? JSON.stringify(manifest) : '' },
   );
 }
 
@@ -91,28 +84,14 @@ export function handleOciManifestSuccess(): Validation.ValidationResponse {
  * Handles OCI manifest lookup failure scenario
  */
 export function handleOciManifestFailure(): Validation.ValidationResponse {
-  const image = 'registry.testing.lan/nonexistent-image:1.0.0';
-  let manifest: OciImageManifestResponse | null = null;
-  try {
-    manifest = Manifest.getOCIManifest(image);
-  } catch (e) {
-    console.error('OCI manifest lookup failed:', e);
-    return new Validation.ValidationResponse(
-      false,
-      `OCI manifest lookup failed: ${e}`,
-      undefined,
-      undefined,
-      { manifestType: '' },
-    );
-  }
-  // If manifest is retrieved, treat as failure
-  const manifestType = manifest?.image ? 'image' : manifest?.index ? 'index' : '';
+  const image = 'example.test/nonexistent-image:1.0.0';
+  const manifest = Manifest.getOCIManifest(image);
   return new Validation.ValidationResponse(
-    false,
-    'Unexpectedly retrieved OCI manifest',
+    !manifest,
+    `Unexpectedly succeeded in manifest lookup`,
     undefined,
     undefined,
-    { manifestType },
+    { manifest: '' },
   );
 }
 
