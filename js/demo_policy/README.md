@@ -7,7 +7,7 @@ This is a sample Kubewarden policy written in TypeScript that demonstrates the c
 This policy validates Kubernetes Pod admission requests and demonstrates several key features:
 
 - **Privileged Container Validation**: Rejects pods with privileged containers unless they're in an ignored namespace
-- **Host Capabilities Integration**: Shows how to use Kubewarden's host capabilities. More specifically it uses the [OCI manifest digest capability](https://docs.kubewarden.io/reference/spec/host-capabilities/container-registry#get-oci-manifest-digest) and the [DNS lookup capability](https://docs.kubewarden.io/reference/spec/host-capabilities/net#dns-host-lookup)
+- **Host Capabilities Integration**: Shows how to use Kubewarden's host capabilities. More specifically it uses the [OCI manifest digest capability](https://docs.kubewarden.io/reference/spec/host-capabilities/container-registry#get-oci-manifest-digest), the [OCI manifest capabilty](https://docs.kubewarden.io/reference/spec/host-capabilities/container-registry#oci-manifest) and the [DNS lookup capability](https://docs.kubewarden.io/reference/spec/host-capabilities/net#dns-host-lookup)
 - **Configurable Settings**: Supports runtime configuration through policy settings
 
 ## Configuration
@@ -23,6 +23,8 @@ ignoredNamespaces:
 # Possible values:
 #   - oci-manifest-digest-success: simulate a successful OCI manifest digest lookup
 #   - oci-manifest-digest-failure: simulate a failed OCI manifest digest lookup
+#   - oci-manifest-success: simulate a successful OCI manifest lookup
+#   - oci-manifest-failed: simulate a failed OCI manifest lookup
 #   - dns-lookup-success: simulate a successful DNS lookup
 #   - dns-lookup-failure: simulate a failed DNS lookup
 # Leaving testScenario empty or omitted will run the default privileged container validation.
