@@ -2,6 +2,7 @@ import type { Pod } from 'kubernetes-types/core/v1';
 
 import { Network } from '../kubewarden/host_capabilities/net/network';
 import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
+import { ManifestConfig } from '../kubewarden/host_capabilities/oci/manifest_config/manifest_config';
 import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
 import { Validation } from '../kubewarden/validation';
 
@@ -114,4 +115,40 @@ export function handlePrivilegedContainerValidation(
     return Validation.rejectRequest('privileged containers are not allowed');
   }
   return Validation.acceptRequest();
+}
+
+/**
+ * Handles OCI manifest and config lookup success scenario
+ */
+export function handleOciManifestAndConfigSuccess(): Validation.ValidationResponse {
+  const image = 'docker.io/library/busybox:1.36';
+  const response = ManifestConfig.getOCIManifestAndConfig(image);
+  return new Validation.ValidationResponse(
+    !!response.manifest && !!response.config,
+    response.manifest && response.config ? undefined : 'Failed to retrieve OCI manifest and config',
+    undefined,
+    undefined,
+    {
+      manifest: response.manifest ? JSON.stringify(response.manifest) : '',
+      config: response.config ? JSON.stringify(response.config) : '',
+    },
+  );
+}
+
+/**
+ * Handles OCI manifest and config lookup failure scenario
+ */
+export function handleOciManifestAndConfigFailure(): Validation.ValidationResponse {
+  const image = 'registry.testing.lan/nonexistent-image:1.0.0';
+  const response = ManifestConfig.getOCIManifestAndConfig(image); // host call should fail
+  return new Validation.ValidationResponse(
+    !response.manifest && !response.config,
+    `Unexpectedly succeeded in manifest and config lookup`,
+    undefined,
+    undefined,
+    {
+      manifest: response.manifest ? JSON.stringify(response.manifest) : '',
+      config: response.config ? JSON.stringify(response.config) : '',
+    },
+  );
 }
