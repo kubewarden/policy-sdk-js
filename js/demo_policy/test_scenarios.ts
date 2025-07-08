@@ -1,6 +1,7 @@
 import type { Pod } from 'kubernetes-types/core/v1';
 
 import { Network } from '../kubewarden/host_capabilities/network';
+import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
 import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
 import { Validation } from '../kubewarden/validation';
 
@@ -61,6 +62,36 @@ export function handleDnsLookupFailure(): Validation.ValidationResponse {
     undefined,
     undefined,
     { ips: ips.join(', ') },
+  );
+}
+
+/**
+ * Handles OCI manifest lookup success scenario
+ */
+export function handleOciManifestSuccess(): Validation.ValidationResponse {
+  const image = 'docker.io/library/busybox:1.36';
+  const manifest = Manifest.getOCIManifest(image);
+  return new Validation.ValidationResponse(
+    !!manifest,
+    manifest ? undefined : 'Failed to retrieve OCI manifest',
+    undefined,
+    undefined,
+    { manifest: manifest ? JSON.stringify(manifest) : '' },
+  );
+}
+
+/**
+ * Handles OCI manifest lookup failure scenario
+ */
+export function handleOciManifestFailure(): Validation.ValidationResponse {
+  const image = 'example.test/nonexistent-image:1.0.0';
+  const manifest = Manifest.getOCIManifest(image);
+  return new Validation.ValidationResponse(
+    !manifest,
+    `Unexpectedly succeeded in manifest lookup`,
+    undefined,
+    undefined,
+    { manifest: '' },
   );
 }
 
