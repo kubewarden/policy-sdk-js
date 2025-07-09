@@ -148,7 +148,7 @@ describe('ManifestConfig Unit Tests', () => {
     jest.spyOn(HostCall.HostCall, 'hostCall').mockImplementation(mockHost.hostCall.bind(mockHost));
 
     expect(() => ManifestConfig.getOCIManifestAndConfig(image)).toThrow(
-      `Image not found: ${image}`,
+      `image not found: ${image}`,
     );
   });
 });
