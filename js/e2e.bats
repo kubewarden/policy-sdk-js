@@ -7,13 +7,15 @@
   [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
   [ $(expr "$output" : '.*"manifest":".*application/vnd.oci.image.manifest.v1+json.*') -ne 0 ]
   [ $(expr "$output" : '.*"manifest":"{.*application/vnd.oci.image.config.v1+json.*}') -ne 0 ]
+  [ $(expr "$output" : '.*"digest":"sha256:abc123"') -ne 0 ]
 }
+
 @test "should fail for nonexistent image manifest and config" {
   run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-and-config-failure"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-and-config-lookup-failure.yml
   echo "output = ${output}"
   [ "$status" -eq 0 ]
   [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
-  [[ "$output" =~ "wrong invocation" ]]
+  [[ "$output" =~ "image not found" ]]
 }
 
 @test "should return valid manifest for busybox:1.36" {
