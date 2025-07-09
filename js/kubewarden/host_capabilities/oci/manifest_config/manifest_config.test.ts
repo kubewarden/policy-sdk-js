@@ -33,7 +33,7 @@ class MockWasmHost {
       return new TextEncoder().encode(JSON.stringify(this.knownImages[image]));
     }
 
-    throw new Error(`Image not found: ${image}`);
+    throw new Error(`image not found: ${image}`);
   }
 }
 
