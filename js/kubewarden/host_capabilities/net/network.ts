@@ -1,4 +1,4 @@
-import { HostCall } from './index';
+import { HostCall } from '../index';
 
 export namespace Network {
   /**

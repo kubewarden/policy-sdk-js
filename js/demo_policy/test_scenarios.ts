@@ -1,6 +1,6 @@
 import type { Pod } from 'kubernetes-types/core/v1';
 
-import { Network } from '../kubewarden/host_capabilities/network';
+import { Network } from '../kubewarden/host_capabilities/net/network';
 import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
 import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
 import { Validation } from '../kubewarden/validation';
