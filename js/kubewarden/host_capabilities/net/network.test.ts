@@ -18,7 +18,7 @@ describe('Network Unit Tests', () => {
       'kubewarden',
       'net',
       'v1/dns_lookup_host',
-      expectedPayload,
+      expectedPayload.buffer,
     );
     expect(result.ips[0]).toEqual(expectedResponse.ips[0]);
   });
