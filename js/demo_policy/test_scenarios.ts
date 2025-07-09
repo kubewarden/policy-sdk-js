@@ -130,6 +130,7 @@ export function handleOciManifestAndConfigSuccess(): Validation.ValidationRespon
     undefined,
     {
       manifest: response.manifest ? JSON.stringify(response.manifest) : '',
+      digest: response.digest || '',
       config: response.config ? JSON.stringify(response.config) : '',
     },
   );
@@ -139,7 +140,7 @@ export function handleOciManifestAndConfigSuccess(): Validation.ValidationRespon
  * Handles OCI manifest and config lookup failure scenario
  */
 export function handleOciManifestAndConfigFailure(): Validation.ValidationResponse {
-  const image = 'registry.testing.lan/nonexistent-image:1.0.0';
+  const image = 'example.test/nonexistent-image';
   const response = ManifestConfig.getOCIManifestAndConfig(image); // host call should fail
   return new Validation.ValidationResponse(
     !response.manifest && !response.config,
@@ -148,6 +149,7 @@ export function handleOciManifestAndConfigFailure(): Validation.ValidationRespon
     undefined,
     {
       manifest: response.manifest ? JSON.stringify(response.manifest) : '',
+      digest: response.digest || '',
       config: response.config ? JSON.stringify(response.config) : '',
     },
   );

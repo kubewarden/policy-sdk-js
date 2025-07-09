@@ -4,4 +4,49 @@
     image: docker.io/library/busybox:1.36
   response:
     type: Success
-    payload: '{"manifest":{"schemaVersion":2,"mediaType":"application/vnd.oci.image.manifest.v1+json","config":{"mediaType":"application/vnd.oci.image.config.v1+json","digest":"sha256:abc123","size":123},"layers":[{"mediaType":"application/vnd.oci.image.layer.v1.tar+gzip","digest":"sha256:def456","size":456}]},"config":{"architecture":"amd64","config":{"Env":["PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"],"Cmd":["sh"],"User":"","WorkingDir":"","ArgsEscaped":true},"created":"2023-05-19T20:19:24Z","history":[{"created":"2023-05-19T20:19:24Z","created_by":"/bin/sh -c #(nop) ADD file:9a4f77dfaba7fd2aa78186e4ef0e7486ad55101cefc1f84c766a1eacf8e7a1a to /"}],"os":"linux","rootfs":{"type":"layers","diff_ids":["sha256:layer1"]}}}'
+    payload: |
+      {
+        "manifest": {
+          "schemaVersion": 2,
+          "mediaType": "application/vnd.oci.image.manifest.v1+json",
+          "config": {
+            "mediaType": "application/vnd.oci.image.config.v1+json",
+            "digest": "sha256:abc123",
+            "size": 123
+          },
+          "layers": [
+            {
+              "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+              "digest": "sha256:def456",
+              "size": 456
+            }
+          ]
+        },
+        "digest": "sha256:abc123",
+        "config": {
+          "architecture": "amd64",
+          "config": {
+            "Env": [
+              "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": ["sh"],
+            "User": "",
+            "WorkingDir": "",
+            "ArgsEscaped": true
+          },
+          "created": "2023-05-19T20:19:24Z",
+          "history": [
+            {
+              "created": "2023-05-19T20:19:24Z",
+              "created_by": "/bin/sh -c #(nop) ADD file:9a4f77dfaba7fd2aa78186e4ef0e7486ad55101cefc1f84c766a1eacf8e7a1a to /"
+            }
+          ],
+          "os": "linux",
+          "rootfs": {
+            "type": "layers",
+            "diff_ids": [
+              "sha256:layer1"
+            ]
+          }
+        }
+      }

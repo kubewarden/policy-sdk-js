@@ -1,7 +1,7 @@
 - type: Exchange
   request: |
     !OciManifestAndConfig
-    image: registry.testing.lan/nonexistent-image:1.0.0
+    image: example.test/nonexistent-image
   response:
     type: Error
     message: 'Failed to retrieve OCI manifest and config: image not found'
