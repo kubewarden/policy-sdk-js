@@ -1,4 +1,4 @@
-import { HostCall } from './index';
+import { HostCall } from '../index';
 
 export namespace Network {
   /**
@@ -20,7 +20,7 @@ export namespace Network {
    */
   export function dnsLookup(hostname: string): DnsLookupResponse {
     const payload = new TextEncoder().encode(JSON.stringify(hostname));
-    const response = HostCall.hostCall('kubewarden', 'net', 'v1/dns_lookup_host', payload.buffer);
+    const response = HostCall.hostCall('kubewarden', 'net', 'v1/dns_lookup_host', payload);
     const responseString = new TextDecoder().decode(response);
 
     return JSON.parse(responseString) as DnsLookupResponse;
