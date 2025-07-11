@@ -9,6 +9,8 @@ import {
   handleDnsLookupFailure,
   handleOciManifestFailure,
   handleOciManifestSuccess,
+  handleOciManifestAndConfigFailure,
+  handleOciManifestAndConfigSuccess,
   handlePrivilegedContainerValidation,
 } from './test_scenarios';
 
@@ -49,6 +51,14 @@ function validate() {
     }
     case 'oci-manifest-failure': {
       response = handleOciManifestFailure();
+      break;
+    }
+    case 'oci-manifest-and-config-success': {
+      response = handleOciManifestAndConfigSuccess();
+      break;
+    }
+    case 'oci-manifest-and-config-failure': {
+      response = handleOciManifestAndConfigFailure();
       break;
     }
     default: {
