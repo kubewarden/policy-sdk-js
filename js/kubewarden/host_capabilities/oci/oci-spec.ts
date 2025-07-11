@@ -62,7 +62,7 @@ export interface Index {
   annotations?: Record<string, string>;
 }
 
-export interface Image {
+export interface ImageConfiguration {
   created?: string;
   author?: string;
   architecture: string;
