@@ -26,7 +26,7 @@ during policy evaluation.
 The project is organized into the following components:
 
 - **`js/`**: The core TypeScript SDK.
-- **`js/demo-policy/`**: A sample policy demonstrating the SDKs capabilities.
+- **`demo-policy/`**: A sample policy demonstrating the SDKs capabilities.
 - **`javy-plugin-kubewarden/`**: Custom Javy plugin for JavaScript to WebAssembly compilation
 
 ## Requirements

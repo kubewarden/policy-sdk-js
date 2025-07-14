@@ -1,5 +1,5 @@
-import { Validation } from '../kubewarden/validation';
-import { writeOutput } from '../protocol';
+import { Validation } from '../js/kubewarden/validation';
+import { writeOutput } from '../js/protocol';
 
 import { PolicySettings } from './policy_settings';
 import {
