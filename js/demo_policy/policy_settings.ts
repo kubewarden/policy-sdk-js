@@ -15,6 +15,8 @@ export class PolicySettings {
       'dns-lookup-failure',
       'oci-manifest-success',
       'oci-manifest-failure',
+      'oci-manifest-and-config-success',
+      'oci-manifest-and-config-failure',
     ];
 
     if (this.testScenario && !knownScenarios.includes(this.testScenario)) {
