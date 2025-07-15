@@ -17,6 +17,8 @@ export class PolicySettings {
       'oci-manifest-failure',
       'oci-manifest-and-config-success',
       'oci-manifest-and-config-failure',
+      'get-resource-success',
+      'get-resource-failure',
     ];
 
     if (this.testScenario && !knownScenarios.includes(this.testScenario)) {
