@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 @test "should return valid manifest and config for busybox:1.36" {
-  run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-and-config-success"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-and-config-lookup-success.yml
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-and-config-success"}' --replay-host-capabilities-interactions ./test_data/sessions/oci-manifest-and-config-lookup-success.yml
   echo "output = ${output}"
   [ "$status" -eq 0 ]
   [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
@@ -11,7 +11,7 @@
 }
 
 @test "should fail for nonexistent image manifest and config" {
-  run kwctl run annotated-policy.wasm -r ./demo_policy/test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-and-config-failure"}' --replay-host-capabilities-interactions ./demo_policy/test_data/sessions/oci-manifest-and-config-lookup-failure.yml
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-and-config-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/oci-manifest-and-config-lookup-failure.yml
   echo "output = ${output}"
   [ "$status" -eq 0 ]
   [ $(expr "$output" : '.*allowed.*false') -ne 0 ]
