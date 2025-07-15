@@ -9,7 +9,10 @@ rules:
       - CREATE
       - UPDATE
 mutating: false
-contextAware: false
+contextAware: true
+contextAwareResources:
+  - apiVersion: v1
+    kind: Namespace
 executionMode: wasi
 annotations:
   io.kubewarden.policy.title: js-demo-policy
