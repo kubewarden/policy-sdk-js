@@ -2,7 +2,7 @@ import { Kubernetes } from './kubernetes';
 import type { GetResourceRequest } from './types';
 
 // Mock the HostCall
-jest.mock('../..', () => ({
+jest.mock('../', () => ({
   HostCall: {
     hostCall: jest.fn(() => {
       const response = {
