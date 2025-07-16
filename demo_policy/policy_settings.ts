@@ -1,4 +1,4 @@
-import { Validation } from '../kubewarden/validation';
+import { Validation } from '../js/kubewarden/validation';
 
 export class PolicySettings {
   ignoredNamespaces?: string[];

@@ -1,5 +1,5 @@
 {
-  "name": "policy-sdk-js",
+  "name": "demo-policy",
   "dependencies": {
     "kubernetes-types": "^1.30.0"
   },

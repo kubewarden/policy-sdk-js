@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "NodeNext",
     "target": "ES6",
-    "outDir": "./dist",
+    "outDir": "../demo_policy/dist",
     "types": ["jest", "node"],
     "moduleResolution": "nodenext",
     "esModuleInterop": true,

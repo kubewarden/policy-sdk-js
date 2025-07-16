@@ -1,10 +1,10 @@
 import type { Pod } from 'kubernetes-types/core/v1';
 
-import { Network } from '../kubewarden/host_capabilities/net/network';
-import { Manifest } from '../kubewarden/host_capabilities/oci/manifest/manifest';
-import { ManifestConfig } from '../kubewarden/host_capabilities/oci/manifest_config/manifest_config';
-import { ManifestDigest } from '../kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
-import { Validation } from '../kubewarden/validation';
+import { Network } from '../js/kubewarden/host_capabilities/net/network';
+import { Manifest } from '../js/kubewarden/host_capabilities/oci/manifest/manifest';
+import { ManifestConfig } from '../js/kubewarden/host_capabilities/oci/manifest_config/manifest_config';
+import { ManifestDigest } from '../js/kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
+import { Validation } from '../js/kubewarden/validation';
 
 import type { PolicySettings } from './policy_settings';
 
