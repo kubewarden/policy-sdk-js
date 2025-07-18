@@ -1,5 +1,6 @@
 import type { Pod } from 'kubernetes-types/core/v1';
 
+import { Kubernetes } from '../js/kubewarden/host_capabilities/kubernetes/kubernetes';
 import { Network } from '../js/kubewarden/host_capabilities/net/network';
 import { Manifest } from '../js/kubewarden/host_capabilities/oci/manifest/manifest';
 import { ManifestConfig } from '../js/kubewarden/host_capabilities/oci/manifest_config/manifest_config';
@@ -153,4 +154,30 @@ export function handleOciManifestAndConfigFailure(): Validation.ValidationRespon
       config: response.config ? JSON.stringify(response.config) : '',
     },
   );
+}
+
+export function handleGetResourceSuccess(): Validation.ValidationResponse {
+  const ns = Kubernetes.getResource({
+    api_version: 'v1',
+    kind: 'Namespace',
+    name: 'test-policy',
+    disable_cache: false,
+  });
+
+  if (ns?.metadata?.labels?.['demo-namespace'] === 'true') {
+    return Validation.acceptRequest();
+  }
+
+  return Validation.rejectRequest('Namespace does not have label demo-namespace=true');
+}
+
+export function handleGetResourceFailure(): Validation.ValidationResponse {
+  Kubernetes.getResource({
+    api_version: 'v1',
+    kind: 'Namespace',
+    name: 'test-policy',
+    disable_cache: false,
+  });
+
+  return Validation.rejectRequest('Unexpectedly succeeded in getResource');
 }
