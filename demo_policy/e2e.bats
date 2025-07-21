@@ -18,6 +18,21 @@
   [[ "$output" =~ "image not found" ]]
 }
 
+@test "should accept if namespace has demo-namespace label" {
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "get-resource-success"}' --replay-host-capabilities-interactions ./test_data/sessions/namespace-found.yml --allow-context-aware
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ '"allowed":true' ]]
+}
+
+@test "should reject if namespace is not labeled properly" {
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "get-resource-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/namespace-not-found.yml --allow-context-aware
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ '"allowed":false' ]]
+  [[ "$output" =~ "wrong invocation" ]]
+}
+
 @test "should return valid manifest for busybox:1.36" {
     run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-success"}' --replay-host-capabilities-interactions ./test_data/sessions/oci-manifest-lookup-success.yml
     echo "output = ${output}"

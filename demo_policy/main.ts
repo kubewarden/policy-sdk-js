@@ -12,6 +12,8 @@ import {
   handleOciManifestAndConfigFailure,
   handleOciManifestAndConfigSuccess,
   handlePrivilegedContainerValidation,
+  handleGetResourceSuccess,
+  handleGetResourceFailure,
 } from './test_scenarios';
 
 declare function policyAction(): string;
@@ -59,6 +61,14 @@ function validate() {
     }
     case 'oci-manifest-and-config-failure': {
       response = handleOciManifestAndConfigFailure();
+      break;
+    }
+    case 'get-resource-success': {
+      response = handleGetResourceSuccess();
+      break;
+    }
+    case 'get-resource-failure': {
+      response = handleGetResourceFailure();
       break;
     }
     default: {
