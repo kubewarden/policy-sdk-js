@@ -1,5 +1,6 @@
 {
-  "name": "policy-sdk-js",
+  "name": "policy-sdk-js-test",
+  "version":"0.1.0-alpha.1",
   "dependencies": {
     "kubernetes-types": "^1.30.0"
   },
