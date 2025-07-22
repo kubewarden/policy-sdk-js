@@ -1,5 +1,15 @@
 {
   "name": "policy-sdk-js",
+  "version": "0.1.0-alpha.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kubewarden/policy-sdk-js.git"
+  },
   "dependencies": {
     "kubernetes-types": "^1.30.0"
   },
