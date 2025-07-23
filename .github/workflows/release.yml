@@ -65,7 +65,7 @@ jobs:
         uses: kubewarden/github-actions/policy-gh-action-dependencies@4da9b3a995e38a7821d404dee64d9559c29bb9c0 # v4.5.3
 
       # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
