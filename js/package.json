@@ -1,8 +1,7 @@
 {
   "name": "policy-sdk-js",
   "version": "0.1.0-alpha.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/bundle.js",
   "files": [
     "dist/"
   ],
