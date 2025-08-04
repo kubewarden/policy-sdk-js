@@ -1,8 +1,11 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
   entry: './index.ts',
+  mode: 'production',
+  target: 'node',
+  devtool: false,
+
   module: {
     rules: [
       {
@@ -12,12 +15,22 @@ module.exports = {
       },
     ],
   },
+
   resolve: {
     extensions: ['.ts', '.js'],
   },
+
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    library: {
+      type: 'commonjs2',
+    },
   },
+
+  externals: {
+    'kubernetes-types': 'commonjs kubernetes-types',
+  },
+
   target: 'node', // If you are targeting Node.js environment
 };

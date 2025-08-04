@@ -1,15 +1,23 @@
-// Kubewarden Policy SDK for JavaScript/ TypeScript
-// Main entry point that exports all SDK functionality
+// Import all modules
+import * as admission from './kubewarden/admission';
+import * as constants from './kubewarden/constants/constants';
+import * as hostCapabilities from './kubewarden/host_capabilities';
+import * as validation from './kubewarden/validation';
+import * as protocol from './protocol';
 
-// Core SDK modules
-export * from './kubewarden/admission';
-export * from './kubewarden/validation';
+// Export
+export default {
+  admission,
+  validation,
+  hostCapabilities,
+  constants,
+  protocol,
+};
 
-// Host capabilities
-export * from './kubewarden/host_capabilities';
+export { validation as Validation };
+export { protocol };
+export { admission };
+export { constants };
+export { hostCapabilities };
 
-// Constants
-export * from './kubewarden/constants/constants';
-
-// Protocol definitions
-export * from './protocol';
+export const { writeOutput } = protocol;
