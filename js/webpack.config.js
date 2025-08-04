@@ -4,7 +4,7 @@ module.exports = {
   entry: './index.ts',
   mode: 'production',
   target: 'node',
-  devtool: false, 
+  devtool: false,
 
   module: {
     rules: [
@@ -25,11 +25,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     library: {
       type: 'commonjs2',
-    }
+    },
   },
 
   externals: {
-    'kubernetes-types': 'commonjs kubernetes-types'
+    'kubernetes-types': 'commonjs kubernetes-types',
   },
 
   target: 'node', // If you are targeting Node.js environment
