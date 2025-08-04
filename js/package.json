@@ -1,7 +1,17 @@
 {
-  "name": "policy-sdk-js",
-  "version": "0.1.0-alpha.1",
+  "name": "kubewarden-policy-sdk",
+  "version": "0.1.0-alpha.0",
   "main": "dist/bundle.js",
+  "module": "dist/bundle.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/bundle.js",
+      "import": "./dist/bundle.js",
+      "default": "./dist/bundle.js"
+    },
+    "./kubewarden": "./dist/kubewarden"
+  },
   "files": [
     "dist/"
   ],
@@ -15,7 +25,7 @@
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.13.1",
+    "@types/node": "^22.16.5",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-import": "^2.31.0",
@@ -28,12 +38,15 @@
     "prettier": "^3.5.3",
     "ts-jest": "^29.4.0",
     "ts-loader": "^9.5.2",
+    "typescript": "^5.0.0",
     "typescript-eslint": "^8.26.0",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "npm run build:lib && npm run build:types",
+    "build:lib": "webpack",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
