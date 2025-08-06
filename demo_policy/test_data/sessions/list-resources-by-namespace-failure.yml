@@ -1,0 +1,11 @@
+- type: Exchange
+  request: |
+    !KubernetesListResourceNamespace
+    api_version: v1
+    kind: Pod
+    namespace: nonexistent-namespace
+    label_selector: null
+    field_selector: null
+  response:
+    type: Error
+    message: "namespace 'nonexistent-namespace' not found"
