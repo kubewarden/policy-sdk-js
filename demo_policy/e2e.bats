@@ -1,5 +1,58 @@
 #!/usr/bin/env bats
 
+@test "should allow pod creation in default namespace" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "can-i-success"}' --replay-host-capabilities-interactions ./test_data/sessions/can-i-success.yml --allow-context-aware
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [ $(expr "$output" : '.*allowed.*true') -ne 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+}
+
+@test "should deny node deletion" {
+    run kwctl run annotated-policy.wasm \
+        -r ./test_data/no_privileged_containers.json \
+        --settings-json '{"testScenario": "can-i-failure"}' \
+        --replay-host-capabilities-interactions ./test_data/sessions/can-i-failure.yml \
+        --allow-context-aware
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":false' ]]
+}
+
+@test "should return pods when listing all resources with label selector" {
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "list-all-resources-success"}' --replay-host-capabilities-interactions ./test_data/sessions/list-all-resources-success.yml --allow-context-aware
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ '"allowed":true' ]]
+  [[ "$output" =~ '"podCount":"2"' ]]
+  [[ "$output" =~ 'PodList' ]]
+}
+
+@test "should fail when listing invalid resources" {
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "list-all-resources-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/list-all-resources-failure.yml --allow-context-aware
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ '"allowed":false' ]]
+  [[ "$output" =~ "wrong invocation" ]]
+}
+
+@test "should return configmaps when listing resources by namespace" {
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "list-resources-by-namespace-success"}' --replay-host-capabilities-interactions ./test_data/sessions/list-resources-by-namespace-success.yml --allow-context-aware
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ '"allowed":true' ]]
+  [[ "$output" =~ '"configMapCount":"1"' ]]
+  [[ "$output" =~ 'ConfigMapList' ]]
+}
+
+@test "should fail when listing resources from nonexistent namespace" {
+  run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "list-resources-by-namespace-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/list-resources-by-namespace-failure.yml --allow-context-aware
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ '"allowed":false' ]]
+  [[ "$output" =~ "wrong invocation" ]]
+}
+
 @test "should return valid manifest and config for busybox:1.36" {
   run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "oci-manifest-and-config-success"}' --replay-host-capabilities-interactions ./test_data/sessions/oci-manifest-and-config-lookup-success.yml
   echo "output = ${output}"

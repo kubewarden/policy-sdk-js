@@ -1,0 +1,18 @@
+- type: Exchange
+  request: |
+    !KubernetesCanI
+    request:
+      groups: null
+      resource_attributes:
+        group: ''
+        name: null
+        namespace: null
+        resource: pods
+        subresource: null
+        verb: create
+        version: null
+      user: system:serviceaccount:default:my-service-account
+    disable_cache: false
+  response:
+    type: Success
+    payload: '{"allowed":true}'
