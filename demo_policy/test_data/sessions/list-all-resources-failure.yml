@@ -1,0 +1,10 @@
+- type: Exchange
+  request: |
+    !KubernetesListResourceAll
+    api_version: v1
+    kind: InvalidResource
+    label_selector: null
+    field_selector: null
+  response:
+    type: Error
+    message: "the server doesn't have a resource type 'InvalidResource'"

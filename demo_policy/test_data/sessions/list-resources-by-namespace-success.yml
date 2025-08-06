@@ -1,0 +1,11 @@
+- type: Exchange
+  request: |
+    !KubernetesListResourceNamespace
+    api_version: v1
+    kind: ConfigMap
+    namespace: kube-system
+    label_selector: component=kube-proxy
+    field_selector: null
+  response:
+    type: Success
+    payload: '{"apiVersion":"v1","kind":"ConfigMapList","items":[{"apiVersion":"v1","kind":"ConfigMap","metadata":{"name":"kube-proxy","namespace":"kube-system","labels":{"component":"kube-proxy"}},"data":{"config.conf":"mode: ipvs\nclusterCIDR: 10.244.0.0/16"}}]}'
