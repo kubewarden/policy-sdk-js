@@ -13,6 +13,10 @@ contextAware: true
 contextAwareResources:
   - apiVersion: v1
     kind: Namespace
+  - apiVersion: v1
+    kind: Pod
+  - apiVersion: v1
+    kind: ConfigMap
 executionMode: wasi
 annotations:
   io.kubewarden.policy.title: js-demo-policy

@@ -14,6 +14,12 @@ import {
   handlePrivilegedContainerValidation,
   handleGetResourceSuccess,
   handleGetResourceFailure,
+  handleListAllResourcesSuccess,
+  handleListAllResourcesFailure,
+  handleListResourcesByNamespaceSuccess,
+  handleListResourcesByNamespaceFailure,
+  handleCanISuccess,
+  handleCanIFailure,
 } from './test_scenarios';
 
 declare function policyAction(): string;
@@ -69,6 +75,30 @@ function validate() {
     }
     case 'get-resource-failure': {
       response = handleGetResourceFailure();
+      break;
+    }
+    case 'list-all-resources-success': {
+      response = handleListAllResourcesSuccess();
+      break;
+    }
+    case 'list-all-resources-failure': {
+      response = handleListAllResourcesFailure();
+      break;
+    }
+    case 'list-resources-by-namespace-success': {
+      response = handleListResourcesByNamespaceSuccess();
+      break;
+    }
+    case 'list-resources-by-namespace-failure': {
+      response = handleListResourcesByNamespaceFailure();
+      break;
+    }
+    case 'can-i-success': {
+      response = handleCanISuccess();
+      break;
+    }
+    case 'can-i-failure': {
+      response = handleCanIFailure();
       break;
     }
     default: {
