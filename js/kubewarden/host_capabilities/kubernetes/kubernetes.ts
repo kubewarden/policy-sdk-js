@@ -6,13 +6,14 @@ import type {
   ListAllResourcesRequest,
   CanIRequest,
   SubjectAccessReviewStatus,
+  List,
 } from './types';
 
 /**
  * Kubernetes Host Capability
  */
 export namespace Kubernetes {
-  export function listResourcesByNamespace<T = any>(req: ListResourcesByNamespaceRequest): T {
+  export function listResourcesByNamespace<T = any>(req: ListResourcesByNamespaceRequest): List<T> {
     let payload: ArrayBuffer;
     try {
       payload = new TextEncoder().encode(JSON.stringify(req)).buffer;
@@ -40,7 +41,7 @@ export namespace Kubernetes {
     }
   }
 
-  export function listAllResources<T = any>(req: ListAllResourcesRequest): T {
+  export function listAllResources<T = any>(req: ListAllResourcesRequest): List<T> {
     let payload: ArrayBuffer;
     try {
       payload = new TextEncoder().encode(JSON.stringify(req)).buffer;
