@@ -1,3 +1,5 @@
+import type { ListMeta } from 'kubernetes-types/meta/v1';
+
 export interface ListResourcesByNamespaceRequest {
   api_version: string;
   kind: string;
@@ -47,4 +49,11 @@ export interface SubjectAccessReviewStatus {
   denied?: boolean;
   reason?: string;
   evaluationError?: string;
+}
+
+export interface List<T> {
+  apiVersion?: string;
+  kind?: string;
+  items: Array<T>;
+  metadata?: ListMeta;
 }
