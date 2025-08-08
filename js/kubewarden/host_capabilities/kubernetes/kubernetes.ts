@@ -109,7 +109,11 @@ export namespace Kubernetes {
 
     try {
       const jsonString = new TextDecoder().decode(responsePayload);
-      return JSON.parse(jsonString) as SubjectAccessReviewStatus;
+      const parsed = JSON.parse(jsonString);
+      if (typeof parsed.allowed !== 'boolean') {
+        throw new Error("Invalid canI response: 'allowed' is missing or not boolean");
+      }
+      return parsed as SubjectAccessReviewStatus;
     } catch (err) {
       throw new Error(`Failed to decode or parse canI response: ${err}`);
     }
