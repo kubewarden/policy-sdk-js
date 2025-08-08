@@ -8,7 +8,7 @@
     [[ "$output" =~ '"allowed":true' ]]
 }
 
-@test "kubernetes can i - should deny node deletion" {
+@test "kubernetes can i - should deny deletion by unauthorized user {
     run kwctl run annotated-policy.wasm \
         -r ./test_data/no_privileged_containers.json \
         --settings-json '{"testScenario": "can-i-failure"}' \
