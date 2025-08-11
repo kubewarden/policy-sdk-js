@@ -199,7 +199,7 @@ export function handleListAllResourcesSuccess(): Validation.ValidationResponse {
     label_selector: 'app=nginx',
   });
 
-  const podCount = pods?.items?.length || 0;
+  const podCount = pods.items?.length || 0;
   return new Validation.ValidationResponse(
     podCount > 0,
     podCount > 0 ? undefined : 'Failed to retrieve pods',
