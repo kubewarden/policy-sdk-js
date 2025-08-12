@@ -1,6 +1,6 @@
 {
   "name": "kubewarden-policy-sdk",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha",
   "license": "Apache-2.0",
   "main": "dist/bundle.js",
   "module": "dist/bundle.js",
@@ -14,7 +14,8 @@
     "./kubewarden": "./dist/kubewarden"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "plugin/"
   ],
   "repository": {
     "type": "git",
