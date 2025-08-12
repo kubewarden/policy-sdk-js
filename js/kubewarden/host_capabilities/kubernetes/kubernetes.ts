@@ -21,17 +21,12 @@ export namespace Kubernetes {
       throw new Error(`Cannot serialize ListResourcesByNamespaceRequest: ${err}`);
     }
 
-    let responsePayload: ArrayBuffer;
-    try {
-      responsePayload = HostCall.hostCall(
-        'kubewarden',
-        'kubernetes',
-        'list_resources_by_namespace',
-        payload,
-      );
-    } catch (err) {
-      throw new Error(`${err}`);
-    }
+    const responsePayload = HostCall.hostCall(
+      'kubewarden',
+      'kubernetes',
+      'list_resources_by_namespace',
+      payload,
+    );
 
     try {
       const jsonString = new TextDecoder().decode(responsePayload);
@@ -49,17 +44,12 @@ export namespace Kubernetes {
       throw new Error(`Cannot serialize ListAllResourcesRequest: ${err}`);
     }
 
-    let responsePayload: ArrayBuffer;
-    try {
-      responsePayload = HostCall.hostCall(
-        'kubewarden',
-        'kubernetes',
-        'list_resources_all',
-        payload,
-      );
-    } catch (err) {
-      throw new Error(`${err}`);
-    }
+    const responsePayload = HostCall.hostCall(
+      'kubewarden',
+      'kubernetes',
+      'list_resources_all',
+      payload,
+    );
 
     try {
       const jsonString = new TextDecoder().decode(responsePayload);
@@ -77,12 +67,7 @@ export namespace Kubernetes {
       throw new Error(`Cannot serialize GetResourceRequest: ${err}`);
     }
 
-    let responsePayload: ArrayBuffer;
-    try {
-      responsePayload = HostCall.hostCall('kubewarden', 'kubernetes', 'get_resource', payload);
-    } catch (err) {
-      throw new Error(`${err}`);
-    }
+    const responsePayload = HostCall.hostCall('kubewarden', 'kubernetes', 'get_resource', payload);
 
     try {
       const jsonString = new TextDecoder().decode(responsePayload);
@@ -100,12 +85,7 @@ export namespace Kubernetes {
       throw new Error(`Cannot serialize CanIRequest: ${err}`);
     }
 
-    let responsePayload: ArrayBuffer;
-    try {
-      responsePayload = HostCall.hostCall('kubewarden', 'kubernetes', 'can_i', payload);
-    } catch (err) {
-      throw new Error(`${err}`);
-    }
+    const responsePayload = HostCall.hostCall('kubewarden', 'kubernetes', 'can_i', payload);
 
     try {
       const jsonString = new TextDecoder().decode(responsePayload);
