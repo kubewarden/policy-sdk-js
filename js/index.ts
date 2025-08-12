@@ -1,4 +1,5 @@
 // Import all modules
+
 import * as admission from './kubewarden/admission';
 import * as constants from './kubewarden/constants/constants';
 import * as hostCapabilities from './kubewarden/host_capabilities';
@@ -9,10 +10,8 @@ import * as protocol from './protocol';
 let pluginPath: string | undefined;
 try {
   // this will only work in Node.js, not in WASM
-  if (typeof __dirname !== 'undefined') {
-    const path = require('path');
-    pluginPath = path.resolve(__dirname, '../plugin/javy-plugin-kubewarden.wasm');
-  }
+  const path = require('path');
+  pluginPath = path.resolve(__dirname, '../plugin/javy-plugin-kubewarden.wasm');
 } catch {
   // in WASM environment, pluginPath remains undefined
   pluginPath = undefined;
