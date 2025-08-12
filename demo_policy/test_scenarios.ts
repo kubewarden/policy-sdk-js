@@ -1,6 +1,7 @@
 import type { Pod } from 'kubernetes-types/core/v1';
 
 import { Kubernetes } from '../js/kubewarden/host_capabilities/kubernetes/kubernetes';
+import type { CanIRequest } from '../js/kubewarden/host_capabilities/kubernetes/types';
 import { Network } from '../js/kubewarden/host_capabilities/net/network';
 import { Manifest } from '../js/kubewarden/host_capabilities/oci/manifest/manifest';
 import { ManifestConfig } from '../js/kubewarden/host_capabilities/oci/manifest_config/manifest_config';
@@ -156,6 +157,9 @@ export function handleOciManifestAndConfigFailure(): Validation.ValidationRespon
   );
 }
 
+/**
+ * Handles get resource success scenario
+ */
 export function handleGetResourceSuccess(): Validation.ValidationResponse {
   const ns = Kubernetes.getResource({
     api_version: 'v1',
@@ -171,6 +175,9 @@ export function handleGetResourceSuccess(): Validation.ValidationResponse {
   return Validation.rejectRequest('Namespace does not have label demo-namespace=true');
 }
 
+/**
+ * Handles get resource failure scenario
+ */
 export function handleGetResourceFailure(): Validation.ValidationResponse {
   Kubernetes.getResource({
     api_version: 'v1',
@@ -180,4 +187,138 @@ export function handleGetResourceFailure(): Validation.ValidationResponse {
   });
 
   return Validation.rejectRequest('Unexpectedly succeeded in getResource');
+}
+
+/**
+ * Handles list all resources success scenario
+ */
+export function handleListAllResourcesSuccess(): Validation.ValidationResponse {
+  const pods = Kubernetes.listAllResources({
+    api_version: 'v1',
+    kind: 'Pod',
+    label_selector: 'app=nginx',
+  });
+
+  const podCount = pods.items?.length || 0;
+  return new Validation.ValidationResponse(
+    podCount > 0,
+    podCount > 0 ? undefined : 'Failed to retrieve pods',
+    undefined,
+    undefined,
+    { podCount: podCount.toString(), pods: JSON.stringify(pods) },
+  );
+}
+
+/**
+ * Handles list all resources failure scenario
+ */
+export function handleListAllResourcesFailure(): Validation.ValidationResponse {
+  const pods = Kubernetes.listAllResources({
+    api_version: 'v1',
+    kind: 'InvalidResource',
+  }); // host call should fail
+
+  return new Validation.ValidationResponse(
+    false,
+    'Unexpectedly succeeded in listAllResources',
+    undefined,
+    undefined,
+    { pods: JSON.stringify(pods) },
+  );
+}
+
+/**
+ * Handles list resources by namespace success scenario
+ */
+export function handleListResourcesByNamespaceSuccess(): Validation.ValidationResponse {
+  const configMaps = Kubernetes.listResourcesByNamespace({
+    api_version: 'v1',
+    kind: 'ConfigMap',
+    namespace: 'kube-system',
+    label_selector: 'component=kube-proxy',
+  });
+
+  const configMapCount = configMaps?.items?.length || 0;
+  return new Validation.ValidationResponse(
+    configMapCount > 0,
+    configMapCount > 0 ? undefined : 'Failed to retrieve configmaps',
+    undefined,
+    undefined,
+    {
+      configMapCount: configMapCount.toString(),
+      configMaps: JSON.stringify(configMaps),
+    },
+  );
+}
+
+/**
+ * Handles list resources by namespace failure scenario
+ */
+export function handleListResourcesByNamespaceFailure(): Validation.ValidationResponse {
+  const resources = Kubernetes.listResourcesByNamespace({
+    api_version: 'v1',
+    kind: 'Pod',
+    namespace: 'nonexistent-namespace',
+  }); // host call should fail
+
+  return new Validation.ValidationResponse(
+    false,
+    'Unexpectedly succeeded in listResourcesByNamespace',
+    undefined,
+    undefined,
+    { resources: JSON.stringify(resources) },
+  );
+}
+
+/**
+ * Handles canI success scenario - checking if we can create pods in default namespace
+ */
+export function handleCanISuccess(): Validation.ValidationResponse {
+  const review: CanIRequest = {
+    subject_access_review: {
+      groups: undefined,
+      resource_attributes: {
+        namespace: undefined,
+        verb: 'create',
+        group: '',
+        resource: 'pods',
+      },
+      user: 'system:serviceaccount:default:my-service-account',
+    },
+    disable_cache: false,
+  };
+
+  const result = Kubernetes.canI(review);
+  return new Validation.ValidationResponse(result.allowed, result.reason);
+}
+
+/**
+ * Handles canI failure scenario - checking if we can delete cluster-scoped resources
+ */
+export function handleCanIFailure(): Validation.ValidationResponse {
+  const canIResponse = Kubernetes.canI({
+    subject_access_review: {
+      groups: [],
+      resource_attributes: {
+        namespace: '',
+        verb: 'delete',
+        group: '',
+        resource: 'nodes',
+      },
+      user: 'system:serviceaccount:kubewarden:kubewarden-controller',
+    },
+    disable_cache: false,
+  }); // host call should return denied
+
+  return new Validation.ValidationResponse(
+    canIResponse.allowed === false,
+    canIResponse.allowed === false ? undefined : 'Unexpectedly allowed forbidden action',
+    undefined,
+    undefined,
+    {
+      allowed: canIResponse.allowed?.toString() || 'false',
+      reason: canIResponse.reason || '',
+      evaluationError: canIResponse.evaluationError || '',
+    },
+  );
 }
