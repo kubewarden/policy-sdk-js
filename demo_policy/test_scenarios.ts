@@ -1,5 +1,7 @@
 import type { Pod } from 'kubernetes-types/core/v1';
 
+import { Crypto } from '../js/kubewarden/host_capabilities/crypto/crypto';
+import type { Certificate } from '../js/kubewarden/host_capabilities/crypto/types';
 import { Kubernetes } from '../js/kubewarden/host_capabilities/kubernetes/kubernetes';
 import type { CanIRequest } from '../js/kubewarden/host_capabilities/kubernetes/types';
 import { Network } from '../js/kubewarden/host_capabilities/net/network';
@@ -325,6 +327,7 @@ export function handleCanIFailure(): Validation.ValidationResponse {
 }
 
 /**
+/**
  * Handles signature verification using public keys success scenario
  */
 export function handleSigstoreVerifyPubKeySuccess(): Validation.ValidationResponse {
@@ -520,4 +523,93 @@ export function handleSigstoreVerifyGithubActionsFailure(): Validation.Validatio
       repo,
     },
   );
+}
+
+/**
+ * Handles crypto certificate verification success scenario
+ */
+export function handleCryptoVerifyCertSuccess(): Validation.ValidationResponse {
+  // Use the same certificate as in the Go test - simple string converted to byte array
+  const certString = 'certificate0';
+  const cert: Certificate = {
+    encoding: 'Pem',
+    data: Array.from(new TextEncoder().encode(certString)),
+  };
+
+  const certChain: Certificate[] = [];
+
+  const notAfter = '2025-12-31T23:59:59Z';
+
+  try {
+    const result = Crypto.verifyCert(cert, certChain, notAfter);
+    return new Validation.ValidationResponse(
+      result.trusted,
+      result.trusted ? undefined : result.reason,
+      undefined,
+      undefined,
+      {
+        trusted: result.trusted.toString(),
+        reason: result.reason || '',
+        certEncoding: cert.encoding,
+        chainLength: certChain.length.toString(),
+        notAfter,
+        certData: certString, // for debugging
+      },
+    );
+  } catch (error) {
+    return new Validation.ValidationResponse(
+      false,
+      `Certificate verification failed: ${error}`,
+      undefined,
+      undefined,
+      {
+        trusted: 'false',
+        reason: `Error: ${error}`,
+        certEncoding: cert.encoding,
+        chainLength: certChain.length.toString(),
+        notAfter,
+        certData: certString,
+      },
+    );
+  }
+}
+
+/**
+ * Handles crypto certificate verification failure scenario
+ */
+export function handleCryptoVerifyCertFailure(): Validation.ValidationResponse {
+  // Invalid certificate data that will cause verification to fail
+  const invalidCert: Certificate = {
+    encoding: 'Pem',
+    data: Array.from(new TextEncoder().encode('invalid certificate data')),
+  };
+
+  const certChain: Certificate[] = [];
+  const notAfter = '2020-01-01T00:00:00Z'; // expired date
+
+  try {
+    const result = Crypto.verifyCert(invalidCert, certChain, notAfter);
+    return new Validation.ValidationResponse(
+      !result.trusted,
+      result.trusted ? 'Unexpectedly trusted invalid certificate' : undefined,
+      undefined,
+      undefined,
+      {
+        trusted: result.trusted.toString(),
+        reason: result.reason || '',
+        certEncoding: invalidCert.encoding,
+        chainLength: certChain.length.toString(),
+        notAfter,
+      },
+    );
+  } catch (error) {
+    // Expected to fail - this is the success case for this test
+    return new Validation.ValidationResponse(true, undefined, undefined, undefined, {
+      trusted: 'false',
+      reason: `Expected failure: ${error}`,
+      certEncoding: invalidCert.encoding,
+      chainLength: certChain.length.toString(),
+      notAfter,
+    });
+  }
 }
