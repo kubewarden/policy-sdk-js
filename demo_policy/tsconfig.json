@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["jest"]
+    "types": ["jest", "node"]
   },
   "include": ["./*.ts", "./test_data/**/*.ts", "../js/**/*.ts", "../protocol.ts"]
 }
