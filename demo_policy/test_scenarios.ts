@@ -529,56 +529,56 @@ export function handleSigstoreVerifyGithubActionsFailure(): Validation.Validatio
  * Handles crypto certificate verification success scenario
  */
 export function handleCryptoVerifyCertSuccess(): Validation.ValidationResponse {
-  // Use the same certificate as in the Go test - simple string converted to byte array
-  const certString = 'certificate0';
+  const certString = `-----BEGIN CERTIFICATE-----
+MIICSTCCAfCgAwIBAgIUQS1sQWI6HCOK5vsO2DDHqWZER7swCgYIKoZIzj0EAwIw
+gYIxCzAJBgNVBAYTAkRFMRAwDgYDVQQIEwdCYXZhcmlhMRIwEAYDVQQHEwlOdXJl
+bWJlcmcxEzARBgNVBAoTCkt1YmV3YXJkZW4xGzAZBgNVBAsTEkt1YmV3YXJkZW4g
+Um9vdCBDQTEbMBkGA1UEAxMSS3ViZXdhcmRlbiBSb290IENBMB4XDTIyMTEyNTE2
+MTcwMFoXDTI3MTEyNDE2MTcwMFowgYIxCzAJBgNVBAYTAkRFMRAwDgYDVQQIEwdC
+YXZhcmlhMRIwEAYDVQQHEwlOdXJlbWJlcmcxEzARBgNVBAoTCkt1YmV3YXJkZW4x
+GzAZBgNVBAsTEkt1YmV3YXJkZW4gUm9vdCBDQTEbMBkGA1UEAxMSS3ViZXdhcmRl
+biBSb290IENBMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEaCb4QEa4/4rTYBoK
+Bqfjiuc7bzGbOPox4WIA9UJaTRbdD9vEaxCKDztvAZfv8txr6rJJE/mkFqkXJZoP
+NADD2aNCMEAwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0O
+BBYEFPuoSG9XuAy5MN3cpZmptH8pfu0PMAoGCCqGSM49BAMCA0cAMEQCIH6foAtH
+M1glopoEWuk7LbCR5Zsg7Yhv+otAWbP8uQunAiB7bXV4HbW9Y5dDVn4uHvJ3j9Jc
+6gBcoi4XVyawLUiZkQ==
+-----END CERTIFICATE-----`;
+
+  // Convert main cert to byte array
   const cert: Certificate = {
     encoding: 'Pem',
     data: Array.from(new TextEncoder().encode(certString)),
   };
 
-  const certChain: Certificate[] = [];
+  // Add the same cert as its own chain to act as a trust anchor
+  const certChain: Certificate[] = [cert];
 
   const notAfter = '2025-12-31T23:59:59Z';
 
-  try {
-    const result = Crypto.verifyCert(cert, certChain, notAfter);
-    return new Validation.ValidationResponse(
-      result.trusted,
-      result.trusted ? undefined : result.reason,
-      undefined,
-      undefined,
-      {
-        trusted: result.trusted.toString(),
-        reason: result.reason || '',
-        certEncoding: cert.encoding,
-        chainLength: certChain.length.toString(),
-        notAfter,
-        certData: certString, // for debugging
-      },
-    );
-  } catch (error) {
-    return new Validation.ValidationResponse(
-      false,
-      `Certificate verification failed: ${error}`,
-      undefined,
-      undefined,
-      {
-        trusted: 'false',
-        reason: `Error: ${error}`,
-        certEncoding: cert.encoding,
-        chainLength: certChain.length.toString(),
-        notAfter,
-        certData: certString,
-      },
-    );
-  }
+  // Call verifyCert for real verification
+  const result = Crypto.verifyCert(cert, certChain, notAfter);
+
+  return new Validation.ValidationResponse(
+    result.trusted,
+    result.trusted ? undefined : result.reason,
+    undefined,
+    undefined,
+    {
+      trusted: result.trusted.toString(),
+      reason: result.reason || '',
+      certEncoding: cert.encoding,
+      chainLength: certChain.length.toString(),
+      notAfter,
+      certData: certString,
+    },
+  );
 }
 
 /**
  * Handles crypto certificate verification failure scenario
  */
 export function handleCryptoVerifyCertFailure(): Validation.ValidationResponse {
-  // Invalid certificate data that will cause verification to fail
   const invalidCert: Certificate = {
     encoding: 'Pem',
     data: Array.from(new TextEncoder().encode('invalid certificate data')),
@@ -587,29 +587,19 @@ export function handleCryptoVerifyCertFailure(): Validation.ValidationResponse {
   const certChain: Certificate[] = [];
   const notAfter = '2020-01-01T00:00:00Z'; // expired date
 
-  try {
-    const result = Crypto.verifyCert(invalidCert, certChain, notAfter);
-    return new Validation.ValidationResponse(
-      !result.trusted,
-      result.trusted ? 'Unexpectedly trusted invalid certificate' : undefined,
-      undefined,
-      undefined,
-      {
-        trusted: result.trusted.toString(),
-        reason: result.reason || '',
-        certEncoding: invalidCert.encoding,
-        chainLength: certChain.length.toString(),
-        notAfter,
-      },
-    );
-  } catch (error) {
-    // Expected to fail - this is the success case for this test
-    return new Validation.ValidationResponse(true, undefined, undefined, undefined, {
-      trusted: 'false',
-      reason: `Expected failure: ${error}`,
+  const result = Crypto.verifyCert(invalidCert, certChain, notAfter);
+  return new Validation.ValidationResponse(
+    false,
+    result.reason || 'Expected failure', // reason
+    undefined,
+    undefined,
+    {
+      trusted: result.trusted.toString(),
+      reason: result.reason || 'Expected failure',
       certEncoding: invalidCert.encoding,
       chainLength: certChain.length.toString(),
       notAfter,
-    });
-  }
+      certData: 'invalid certificate data',
+    },
+  );
 }

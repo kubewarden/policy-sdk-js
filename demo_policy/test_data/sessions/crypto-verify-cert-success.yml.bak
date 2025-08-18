@@ -1,0 +1,11 @@
+- type: Exchange
+  request: |
+    !CryptoV1IsCertificateTrusted
+    cert:
+      encoding: Pem
+      data: [99, 101, 114, 116, 105, 102, 105, 99, 97, 116, 101, 48]
+    cert_chain: []
+    not_after: "2025-12-31T23:59:59Z"
+  response:
+    type: Success
+    payload: '{"trusted":true,"reason":"","certData":"certificate0","certEncoding":"Pem","chainLength":"0","notAfter":"2025-12-31T23:59:59Z"}'

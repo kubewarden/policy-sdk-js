@@ -78,13 +78,14 @@
     --settings-json '{"testScenario": "crypto-verify-cert-success"}' \
     --replay-host-capabilities-interactions ./test_data/sessions/crypto-verify-cert-success.yml \
     --allow-context-aware
+
   echo "output = ${output}"
   [ "$status" -eq 0 ]
   [[ "$output" =~ '"allowed":true' ]]
   [[ "$output" =~ '"trusted":"true"' ]]
   [[ "$output" =~ '"certEncoding":"Pem"' ]]
-  [[ "$output" =~ '"chainLength":"0"' ]]
-  [[ "$output" =~ '"certData":"certificate0"' ]]
+  [[ "$output" =~ '"chainLength":"1"' ]]
+  [[ "$output" =~ 'MIICSTCCAfCgAwIBAgIUQS1sQWI6HCOK5vsO2DDHqWZER7sw' ]]
 }
 
 @test "crypto verify cert - should fail verification for invalid certificate" {
@@ -95,11 +96,11 @@
     --allow-context-aware
   echo "output = ${output}"
   [ "$status" -eq 0 ]
-  [[ "$output" =~ '"allowed":true' ]]
+  [[ "$output" =~ '"allowed":false' ]]
   [[ "$output" =~ '"trusted":"false"' ]]
   [[ "$output" =~ '"certEncoding":"Pem"' ]]
   [[ "$output" =~ '"chainLength":"0"' ]]
-  [[ "$output" =~ "Expected failure" ]]
+  [[ "$output" =~ "invalid PEM provided: header not found" ]]
 }
 
 @test "kubernetes can i - should allow pod creation in default namespace" {
