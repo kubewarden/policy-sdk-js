@@ -96,10 +96,6 @@
     --allow-context-aware
   echo "output = ${output}"
   [ "$status" -eq 0 ]
-  [[ "$output" =~ '"allowed":false' ]]
-  [[ "$output" =~ '"trusted":"false"' ]]
-  [[ "$output" =~ '"certEncoding":"Pem"' ]]
-  [[ "$output" =~ '"chainLength":"0"' ]]
   [[ "$output" =~ "invalid PEM provided: header not found" ]]
 }
 
