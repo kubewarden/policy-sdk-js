@@ -48,6 +48,16 @@ The policy requires the following tools to be installed on the host machine:
   the end-to-end tests. Install bats locally using the [official installation instructions](https://bats-core.readthedocs.io/en/stable/installation.html) 
 - **[`jest`](https://jestjs.io/docs/getting-started)**: Required to run unit tests.
 
+## Plugin Location
+
+### For SDK Development
+During SDK development, the plugin output get's built in `js/plugin/`.
+
+### For Projects Using the SDK
+When you install the SDK as a dependency in your project, the plugin will be available at: `node_modules/kubewarden-policy-sdk/js/plugin/`
+
+This is the path you'll need to reference when building policies that use this SDK.
+
 ## Building
 
 While inside the `js` directory, run the following command:
