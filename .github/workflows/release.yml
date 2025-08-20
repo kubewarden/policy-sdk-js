@@ -64,6 +64,9 @@ jobs:
       - name: Install dependencies
         uses: kubewarden/github-actions/policy-gh-action-dependencies@17f4dbf90d74f26892f7cc18179d08c4d63914d9 # v4.5.4
 
+      - name: Build Javy plugin
+        run: make build-plugin 
+
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
