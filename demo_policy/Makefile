@@ -1,5 +1,5 @@
 SOURCE_FILES := $(shell find . -name '*.ts')
-KUBEWARDEN_PLUGIN := $(shell find ../javy-plugin-kubewarden -name 'javy-plugin-kubewarden.wasm')
+KUBEWARDEN_PLUGIN := ../js/plugin/javy-plugin-kubewarden.wasm
 
 .PHONY: build annotated-policy.wasm e2e-tests clean
 

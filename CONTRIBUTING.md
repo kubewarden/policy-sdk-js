@@ -29,3 +29,7 @@ tags present; push the tags from origin to your fork.
 ## Code conventions
 Code formatting is handled by Prettier. Run `npm run format` in the `js/`
 directory before committing changes.
+
+## Plugin Location
+
+During SDK development, the `Javy` plugin output get's built in `js/plugin/`.

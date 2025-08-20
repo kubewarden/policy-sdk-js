@@ -2,6 +2,10 @@ const path = require('path');
 
 module.exports = {
   entry: './main.ts',
+  target: 'node',
+  mode: 'production',
+  devtool: false,
+  
   module: {
     rules: [
       {
@@ -18,5 +22,4 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  mode: 'production',
 };

@@ -1,6 +1,6 @@
 {
   "name": "kubewarden-policy-sdk",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha",
   "license": "Apache-2.0",
   "main": "dist/bundle.js",
   "module": "dist/bundle.js",
@@ -14,7 +14,8 @@
     "./kubewarden": "./dist/kubewarden"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "plugin/"
   ],
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.16.5",
+    "@types/node": "^22.17.1",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-import": "^2.31.0",
@@ -48,6 +49,7 @@
     "build": "npm run build:lib && npm run build:types",
     "build:lib": "webpack",
     "build:types": "tsc --emitDeclarationOnly --outDir dist",
+    "prepublishOnly": "make build-plugin",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
