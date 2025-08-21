@@ -64,6 +64,14 @@ jobs:
       - name: Install dependencies
         uses: kubewarden/github-actions/policy-gh-action-dependencies@20e6274f09e9aee263969a8783488369cbdb1e1b # v4.5.5
 
+      - name: Install javy
+        run: |
+          INSTALL_DIR=$HOME/.javy
+          mkdir -p $INSTALL_DIR
+          curl -L https://github.com/bytecodealliance/javy/releases/download/v5.0.4/javy-x86_64-linux-v5.0.4.gz -o javy.gz
+          gunzip javy.gz && chmod +x javy && mv javy $INSTALL_DIR/
+          echo $INSTALL_DIR >> $GITHUB_PATH
+
       - name: Build Javy plugin
         run: make build-plugin 
 
