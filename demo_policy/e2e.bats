@@ -85,7 +85,7 @@
   [[ "$output" =~ '"trusted":"true"' ]]
   [[ "$output" =~ '"certEncoding":"Pem"' ]]
   [[ "$output" =~ '"chainLength":"1"' ]]
-  [[ "$output" =~ 'MIICSTCCAfCgAwIBAgIUQS1sQWI6HCOK5vsO2DDHqWZER7sw' ]]
+  [[ "$output" =~ 'MIICbzCCAhWgAwIBAgIJAOHUuhpytCbWMAoGCCqGSM49BAMCMIGFMQswCQYDVQQG' ]]
 }
 
 @test "crypto verify cert - should fail verification for invalid certificate" {
