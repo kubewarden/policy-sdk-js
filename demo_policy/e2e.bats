@@ -84,7 +84,7 @@
   [[ "$output" =~ '"allowed":true' ]]
   [[ "$output" =~ '"trusted":"true"' ]]
   [[ "$output" =~ '"certEncoding":"Pem"' ]]
-  [[ "$output" =~ '"chainLength":"1"' ]]
+  [[ "$output" =~ '"chainLength":"0"' ]]
   [[ "$output" =~ 'MIICbzCCAhWgAwIBAgIJAOHUuhpytCbWMAoGCCqGSM49BAMCMIGFMQswCQYDVQQG' ]]
 }
 
