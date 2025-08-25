@@ -20,6 +20,14 @@ import {
   handleListResourcesByNamespaceFailure,
   handleCanISuccess,
   handleCanIFailure,
+  handleSigstoreVerifyPubKeySuccess,
+  handleSigstoreVerifyPubKeyFailure,
+  handleSigstoreVerifyKeylessExactSuccess,
+  handleSigstoreVerifyKeylessExactFailure,
+  handleSigstoreVerifyKeylessPrefixSuccess,
+  handleSigstoreVerifyKeylessPrefixFailure,
+  handleSigstoreVerifyGithubActionsSuccess,
+  handleSigstoreVerifyGithubActionsFailure,
 } from './test_scenarios';
 
 declare function policyAction(): string;
@@ -99,6 +107,38 @@ function validate() {
     }
     case 'can-i-failure': {
       response = handleCanIFailure();
+      break;
+    }
+    case 'sigstore-verify-pubkey-success': {
+      response = handleSigstoreVerifyPubKeySuccess();
+      break;
+    }
+    case 'sigstore-verify-pubkey-failure': {
+      response = handleSigstoreVerifyPubKeyFailure();
+      break;
+    }
+    case 'sigstore-verify-keyless-exact-success': {
+      response = handleSigstoreVerifyKeylessExactSuccess();
+      break;
+    }
+    case 'sigstore-verify-keyless-exact-failure': {
+      response = handleSigstoreVerifyKeylessExactFailure();
+      break;
+    }
+    case 'sigstore-verify-keyless-prefix-success': {
+      response = handleSigstoreVerifyKeylessPrefixSuccess();
+      break;
+    }
+    case 'sigstore-verify-keyless-prefix-failure': {
+      response = handleSigstoreVerifyKeylessPrefixFailure();
+      break;
+    }
+    case 'sigstore-verify-github-actions-success': {
+      response = handleSigstoreVerifyGithubActionsSuccess();
+      break;
+    }
+    case 'sigstore-verify-github-actions-failure': {
+      response = handleSigstoreVerifyGithubActionsFailure();
       break;
     }
     default: {

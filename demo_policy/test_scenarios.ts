@@ -6,6 +6,7 @@ import { Network } from '../js/kubewarden/host_capabilities/net/network';
 import { Manifest } from '../js/kubewarden/host_capabilities/oci/manifest/manifest';
 import { ManifestConfig } from '../js/kubewarden/host_capabilities/oci/manifest_config/manifest_config';
 import { ManifestDigest } from '../js/kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
+import { OciSignatureVerifier } from '../js/kubewarden/host_capabilities/oci/verify_v2/verifier';
 import { Validation } from '../js/kubewarden/validation';
 
 import type { PolicySettings } from './policy_settings';
@@ -319,6 +320,204 @@ export function handleCanIFailure(): Validation.ValidationResponse {
       allowed: canIResponse.allowed?.toString() || 'false',
       reason: canIResponse.reason || '',
       evaluationError: canIResponse.evaluationError || '',
+    },
+  );
+}
+
+/**
+ * Handles signature verification using public keys success scenario
+ */
+export function handleSigstoreVerifyPubKeySuccess(): Validation.ValidationResponse {
+  const image = 'registry.example.com/signed-app:v1.0.0';
+  const pubKeys = [
+    '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----',
+  ];
+
+  const result = OciSignatureVerifier.verifyPubKeysImage(image, pubKeys);
+  return new Validation.ValidationResponse(
+    result.is_trusted,
+    result.is_trusted ? undefined : 'Image signature verification with public key failed',
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'public_key',
+    },
+  );
+}
+
+/**
+ * Handles signature verification using public keys failure scenario
+ */
+export function handleSigstoreVerifyPubKeyFailure(): Validation.ValidationResponse {
+  const image = 'registry.example.com/unsigned-app:v1.0.0';
+  const pubKeys = [
+    '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----',
+  ];
+
+  const result = OciSignatureVerifier.verifyPubKeysImage(image, pubKeys);
+  return new Validation.ValidationResponse(
+    !result.is_trusted,
+    result.is_trusted ? 'Unexpectedly verified unsigned image with public key' : undefined,
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'public_key',
+    },
+  );
+}
+
+/**
+ * Handles keyless signature verification (exact match) success scenario
+ */
+export function handleSigstoreVerifyKeylessExactSuccess(): Validation.ValidationResponse {
+  const image = 'registry.example.com/ci-signed-app:v1.0.0';
+  const keyless = [
+    {
+      issuer: 'https://github.com/login/oauth',
+      subject: 'user@example.com',
+    },
+  ];
+
+  const result = OciSignatureVerifier.verifyKeylessExactMatch(image, keyless);
+  return new Validation.ValidationResponse(
+    result.is_trusted,
+    result.is_trusted ? undefined : 'Keyless exact match signature verification failed',
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'keyless_exact',
+    },
+  );
+}
+
+/**
+ * Handles keyless signature verification (exact match) failure scenario
+ */
+export function handleSigstoreVerifyKeylessExactFailure(): Validation.ValidationResponse {
+  const image = 'registry.example.com/untrusted-app:v1.0.0';
+  const keyless = [
+    {
+      issuer: 'https://github.com/login/oauth',
+      subject: 'untrusted@example.com',
+    },
+  ];
+
+  const result = OciSignatureVerifier.verifyKeylessExactMatch(image, keyless);
+  return new Validation.ValidationResponse(
+    !result.is_trusted,
+    result.is_trusted ? 'Unexpectedly verified untrusted keyless signature' : undefined,
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'keyless_exact',
+    },
+  );
+}
+
+/**
+ * Handles keyless signature verification (prefix match) success scenario
+ */
+export function handleSigstoreVerifyKeylessPrefixSuccess(): Validation.ValidationResponse {
+  const image = 'registry.example.com/org-signed-app:v1.0.0';
+  const keylessPrefix = [
+    {
+      issuer: 'https://github.com/login/oauth',
+      url_prefix: 'https://github.com/trusted-org/',
+    },
+  ];
+
+  const result = OciSignatureVerifier.verifyKeylessPrefixMatch(image, keylessPrefix);
+  return new Validation.ValidationResponse(
+    result.is_trusted,
+    result.is_trusted ? undefined : 'Keyless prefix match signature verification failed',
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'keyless_prefix',
+    },
+  );
+}
+
+/**
+ * Handles keyless signature verification (prefix match) failure scenario
+ */
+export function handleSigstoreVerifyKeylessPrefixFailure(): Validation.ValidationResponse {
+  const image = 'registry.example.com/untrusted-org-app:v1.0.0';
+  const keylessPrefix = [
+    {
+      issuer: 'https://github.com/login/oauth',
+      url_prefix: 'https://github.com/trusted-org/',
+    },
+  ];
+
+  const result = OciSignatureVerifier.verifyKeylessPrefixMatch(image, keylessPrefix);
+  return new Validation.ValidationResponse(
+    !result.is_trusted,
+    result.is_trusted ? 'Unexpectedly verified untrusted keyless prefix signature' : undefined,
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'keyless_prefix',
+    },
+  );
+}
+
+/**
+ * Handles GitHub Actions signature verification success scenario
+ */
+export function handleSigstoreVerifyGithubActionsSuccess(): Validation.ValidationResponse {
+  const image = 'registry.example.com/github-actions-app:v1.0.0';
+  const owner = 'trusted-org';
+  const repo = 'trusted-repo';
+
+  const result = OciSignatureVerifier.verifyKeylessGithubActions(image, owner, repo);
+  return new Validation.ValidationResponse(
+    result.is_trusted,
+    result.is_trusted ? undefined : 'GitHub Actions signature verification failed',
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'github_actions',
+      owner,
+      repo,
+    },
+  );
+}
+
+/**
+ * Handles GitHub Actions signature verification failure scenario
+ */
+export function handleSigstoreVerifyGithubActionsFailure(): Validation.ValidationResponse {
+  const image = 'registry.example.com/untrusted-github-app:v1.0.0';
+  const owner = 'untrusted-org';
+  const repo = 'untrusted-repo';
+
+  const result = OciSignatureVerifier.verifyKeylessGithubActions(image, owner, repo);
+  return new Validation.ValidationResponse(
+    !result.is_trusted,
+    result.is_trusted ? 'Unexpectedly verified untrusted GitHub Actions signature' : undefined,
+    undefined,
+    undefined,
+    {
+      is_trusted: result.is_trusted.toString(),
+      digest: result.digest,
+      verification_method: 'github_actions',
+      owner,
+      repo,
     },
   );
 }
