@@ -1,0 +1,9 @@
+- type: Exchange
+  request: |
+    !SigstoreGithubActionsVerify
+    image: registry.example.com/github-actions-app:v1.0.0
+    owner: trusted-org
+    repo: trusted-repo
+  response:
+    type: Success
+    payload: '{"is_trusted":true,"digest":"sha256:123fed456cba"}'

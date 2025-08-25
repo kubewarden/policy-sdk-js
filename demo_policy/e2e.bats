@@ -1,5 +1,77 @@
 #!/usr/bin/env bats
 
+@test "sigstore verify pubkey - should verify signed image with public key" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-pubkey-success"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-pubkey-success.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"is_trusted":"true"' ]]
+    [[ "$output" =~ '"verification_method":"public_key"' ]]
+}
+
+@test "sigstore verify pubkey - should fail verification of unsigned image with public key" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-pubkey-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-pubkey-failure.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"verification_method":"public_key"' ]]
+}
+
+@test "sigstore verify keyless exact - should verify signed image with exact keyless match" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-keyless-exact-success"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-keyless-exact-success.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"is_trusted":"true"' ]]
+    [[ "$output" =~ '"verification_method":"keyless_exact"' ]]
+}
+
+@test "sigstore verify keyless exact - should fail verification of untrusted keyless signature" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-keyless-exact-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-keyless-exact-failure.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"verification_method":"keyless_exact"' ]]
+}
+
+@test "sigstore verify keyless prefix - should verify signed image with prefix match" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-keyless-prefix-success"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-keyless-prefix-success.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"is_trusted":"true"' ]]
+    [[ "$output" =~ '"verification_method":"keyless_prefix"' ]]
+}
+
+@test "sigstore verify keyless prefix - should fail verification of untrusted prefix signature" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-keyless-prefix-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-keyless-prefix-failure.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"verification_method":"keyless_prefix"' ]]
+}
+
+@test "sigstore verify github actions - should verify signed image from GitHub Actions" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-github-actions-success"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-github-actions-success.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"is_trusted":"true"' ]]
+    [[ "$output" =~ '"verification_method":"github_actions"' ]]
+    [[ "$output" =~ '"owner":"trusted-org"' ]]
+    [[ "$output" =~ '"repo":"trusted-repo"' ]]
+}
+
+@test "sigstore verify github actions - should fail verification of untrusted GitHub Actions signature" {
+    run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "sigstore-verify-github-actions-failure"}' --replay-host-capabilities-interactions ./test_data/sessions/sigstore-verify-github-actions-failure.yml
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ '"allowed":true' ]]
+    [[ "$output" =~ '"verification_method":"github_actions"' ]]
+    [[ "$output" =~ '"owner":"untrusted-org"' ]]
+    [[ "$output" =~ '"repo":"untrusted-repo"' ]]
+}
+
 @test "kubernetes can i - should allow pod creation in default namespace" {
     run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "can-i-success"}' --replay-host-capabilities-interactions ./test_data/sessions/can-i-success.yml --allow-context-aware
     echo "output = ${output}"
@@ -8,7 +80,7 @@
     [[ "$output" =~ '"allowed":true' ]]
 }
 
-@test "kubernetes can i - should deny deletion by unauthorized user {
+@test "kubernetes can i - should deny deletion by unauthorized user" {
     run kwctl run annotated-policy.wasm \
         -r ./test_data/no_privileged_containers.json \
         --settings-json '{"testScenario": "can-i-failure"}' \
