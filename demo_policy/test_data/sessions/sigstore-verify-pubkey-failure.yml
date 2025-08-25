@@ -1,0 +1,9 @@
+- type: Exchange
+  request: |
+    !SigstorePubKeyVerify
+    image: registry.example.com/unsigned-app:v1.0.0
+    pub_keys:
+      - "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...\n-----END PUBLIC KEY-----"
+  response:
+    type: Success
+    payload: '{"is_trusted":false,"digest":"sha256:def789abc012"}'

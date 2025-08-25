@@ -1,0 +1,10 @@
+- type: Exchange
+  request: |
+    !SigstoreKeylessPrefixVerify
+    image: registry.example.com/untrusted-org-app:v1.0.0
+    keyless_prefix:
+      - issuer: https://github.com/login/oauth
+        url_prefix: https://github.com/trusted-org/
+  response:
+    type: Success
+    payload: '{"is_trusted":false,"digest":"sha256:789def456abc"}'

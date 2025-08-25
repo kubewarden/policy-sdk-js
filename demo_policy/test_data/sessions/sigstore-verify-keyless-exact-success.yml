@@ -1,0 +1,10 @@
+- type: Exchange
+  request: |
+    !SigstoreKeylessVerify
+    image: registry.example.com/ci-signed-app:v1.0.0
+    keyless:
+      - issuer: https://github.com/login/oauth
+        subject: user@example.com
+  response:
+    type: Success
+    payload: '{"is_trusted":true,"digest":"sha256:fed321cba098"}'
