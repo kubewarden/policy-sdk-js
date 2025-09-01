@@ -8,8 +8,13 @@ import type {
   VerificationResponse,
   KeylessInfo,
   KeylessPrefixInfo,
-  SigstoreVerifyRequest,
 } from './types';
+
+type SigstoreVerifyRequest =
+  | SigstorePubKeyVerifyRequest
+  | SigstoreKeylessVerifyRequest
+  | SigstoreKeylessPrefixVerifyRequest
+  | SigstoreGithubActionsVerifyRequest;
 
 function performVerify(request: SigstoreVerifyRequest): VerificationResponse {
   let payload: ArrayBuffer;
@@ -130,11 +135,4 @@ export namespace OciSignatureVerifier {
 
     return performVerify(request);
   }
-}
-
-/**
- * Utility function to convert a PEM certificate string to the byte array format expected by the API
- */
-export function pemToByteArray(pemString: string): number[] {
-  return Array.from(new TextEncoder().encode(pemString));
 }

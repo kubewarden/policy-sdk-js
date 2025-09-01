@@ -43,9 +43,3 @@ export interface SigstoreGithubActionsVerifyRequest {
   repo?: string;
   annotations?: { [key: string]: string };
 }
-
-export type SigstoreVerifyRequest =
-  | SigstorePubKeyVerifyRequest
-  | SigstoreKeylessVerifyRequest
-  | SigstoreKeylessPrefixVerifyRequest
-  | SigstoreGithubActionsVerifyRequest;
