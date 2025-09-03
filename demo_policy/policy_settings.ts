@@ -25,6 +25,8 @@ export class PolicySettings {
       'list-resources-by-namespace-failure',
       'can-i-success',
       'can-i-failure',
+      'crypto-verify-cert-success',
+      'crypto-verify-cert-failure',
     ];
 
     if (this.testScenario && !knownScenarios.includes(this.testScenario)) {

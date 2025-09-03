@@ -20,6 +20,8 @@ import {
   handleListResourcesByNamespaceFailure,
   handleCanISuccess,
   handleCanIFailure,
+  handleCryptoVerifyCertFailure,
+  handleCryptoVerifyCertSuccess,
 } from './test_scenarios';
 
 declare function policyAction(): string;
@@ -99,6 +101,14 @@ function validate() {
     }
     case 'can-i-failure': {
       response = handleCanIFailure();
+      break;
+    }
+    case 'crypto-verify-cert-success': {
+      response = handleCryptoVerifyCertSuccess();
+      break;
+    }
+    case 'crypto-verify-cert-failure': {
+      response = handleCryptoVerifyCertFailure();
       break;
     }
     default: {
