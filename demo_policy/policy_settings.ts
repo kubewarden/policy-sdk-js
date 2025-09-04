@@ -25,6 +25,14 @@ export class PolicySettings {
       'list-resources-by-namespace-failure',
       'can-i-success',
       'can-i-failure',
+      'sigstore-verify-pubkey-success',
+      'sigstore-verify-pubkey-failure',
+      'sigstore-verify-keyless-exact-success',
+      'sigstore-verify-keyless-exact-failure',
+      'sigstore-verify-keyless-prefix-success',
+      'sigstore-verify-keyless-prefix-failure',
+      'sigstore-verify-github-actions-success',
+      'sigstore-verify-github-actions-failure',
     ];
 
     if (this.testScenario && !knownScenarios.includes(this.testScenario)) {
