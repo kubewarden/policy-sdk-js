@@ -32,10 +32,10 @@ function validate() {
   // Create response
   const response = new Validation.ValidationResponse(
     isValid,
-    isValid ? undefined : "Request rejected by policy",
+    isValid ? undefined : 'Request rejected by policy',
     undefined, // mutated_object (for mutating policies)
     undefined, // warnings
-    { customData: "example" } // annotations
+    { customData: 'example' }, // annotations
   );
 
   // Write the response
@@ -56,8 +56,8 @@ The SDK provides access to Kubewarden's host capabilities:
 import { hostCapabilities } from 'kubewarden-policy-sdk';
 
 // DNS lookup
-const dnsResult = hostCapabilities.Net.lookupHost("example.com");
-console.log("IPs:", dnsResult.ips);
+const dnsResult = hostCapabilities.Net.lookupHost('example.com');
+console.log('IPs:', dnsResult.ips);
 ```
 
 #### OCI Registry Operations
@@ -66,13 +66,13 @@ console.log("IPs:", dnsResult.ips);
 import { hostCapabilities } from 'kubewarden-policy-sdk';
 
 // Get OCI manifest
-const manifest = hostCapabilities.OciManifest.getManifest("registry.io/image:tag");
-console.log("Manifest:", manifest);
+const manifest = hostCapabilities.OciManifest.getManifest('registry.io/image:tag');
+console.log('Manifest:', manifest);
 
 // Verify image signatures
 const verificationResult = hostCapabilities.OciSignatureVerifier.verifyPubKeysImage(
-  "registry.io/image:tag",
-  ["-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"]
+  'registry.io/image:tag',
+  ['-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----'],
 );
 ```
 
@@ -83,17 +83,17 @@ import { hostCapabilities } from 'kubewarden-policy-sdk';
 
 // Get a Kubernetes resource
 const resource = hostCapabilities.Kubernetes.getResource({
-  apiVersion: "v1",
-  kind: "Pod",
-  name: "my-pod",
-  namespace: "default"
+  apiVersion: 'v1',
+  kind: 'Pod',
+  name: 'my-pod',
+  namespace: 'default',
 });
 
 // List resources
 const pods = hostCapabilities.Kubernetes.listResourcesByNamespace({
-  apiVersion: "v1",
-  kind: "Pod",
-  namespace: "default"
+  apiVersion: 'v1',
+  kind: 'Pod',
+  namespace: 'default',
 });
 ```
 
@@ -104,14 +104,14 @@ import { hostCapabilities } from 'kubewarden-policy-sdk';
 
 // Verify certificate
 const cert = hostCapabilities.Crypto.CertificateUtils.fromString(
-  "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
-  "Pem"
+  '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----',
+  'Pem',
 );
 
 const verificationResult = hostCapabilities.Crypto.verifyCert(
   cert,
   [], // certificate chain
-  "2025-12-31T23:59:59Z" // not_after
+  '2025-12-31T23:59:59Z', // not_after
 );
 ```
 
@@ -138,18 +138,20 @@ function validate() {
   }
 
   // Check for privileged containers
-  const hasPrivilegedContainers = pod.spec?.containers?.some(container =>
-    container.securityContext?.privileged === true
-  ) || false;
+  const hasPrivilegedContainers =
+    pod.spec?.containers?.some(container => container.securityContext?.privileged === true) ||
+    false;
 
   if (hasPrivilegedContainers && !settings.allowPrivileged) {
-    writeOutput(new Validation.ValidationResponse(
-      false,
-      "Privileged containers are not allowed",
-      undefined,
-      undefined,
-      { violationType: "privileged-container" }
-    ));
+    writeOutput(
+      new Validation.ValidationResponse(
+        false,
+        'Privileged containers are not allowed',
+        undefined,
+        undefined,
+        { violationType: 'privileged-container' },
+      ),
+    );
     return;
   }
 
@@ -182,26 +184,31 @@ Reads and parses the incoming Kubernetes admission request.
 ### Host Capabilities
 
 #### Network
+
 - `lookupHost(hostname: string)`: DNS resolution
 
 #### Container Registry
+
 - `getManifest(image: string)`: Get OCI manifest
 - `getManifestConfig(image: string)`: Get manifest configuration
 - `getManifestDigest(image: string)`: Get manifest digest
 
 #### Signature Verifier
+
 - `verifyPubKeysImage(image: string, pubKeys: string[])`: Verify with public keys
 - `verifyKeylessExactMatch(image: string, keyless: KeylessInfo[])`: Keyless verification
 - `verifyKeylessPrefix(image: string, keyless: KeylessPrefixInfo[])`: Prefix-based keyless verification
 - `verifyGithubActions(image: string, owner: string)`: GitHub Actions verification
 
 #### Kubernetes
+
 - `getResource(request: GetResourceRequest)`: Get a specific resource
 - `listResourcesByNamespace(request: ListResourcesRequest)`: List resources in namespace
 - `listAllResources(request: ListResourcesRequest)`: List all resources
 - `canI(request: CanIRequest)`: Check permissions
 
 #### Cryptographic
+
 - `verifyCert(cert: Certificate, certChain: Certificate[], notAfter?: string)`: Verify certificates
 - `CertificateUtils.fromString(certString: string, encoding: CertificateEncoding)`: Create certificate from string
 - `CertificateUtils.toString(cert: Certificate)`: Convert certificate to string
@@ -217,6 +224,7 @@ Reads and parses the incoming Kubernetes admission request.
 ### Build Process
 
 1. **Install the SDK**:
+
    ```bash
    npm install kubewarden-policy-sdk
    ```
@@ -226,6 +234,7 @@ Reads and parses the incoming Kubernetes admission request.
 3. **Set up your project structure** with appropriate `package.json`, `tsconfig.json`, and `webpack.config.js`
 
 4. **Build the policy**:
+
    ```bash
    make build           # Compile TypeScript and bundle JavaScript
    make annotated-policy.wasm  # Compile to WebAssembly and annotate
@@ -239,6 +248,7 @@ Reads and parses the incoming Kubernetes admission request.
 ### Plugin Location
 
 The Javy plugin required for compilation is included in the package at:
+
 ```
 node_modules/kubewarden-policy-sdk/plugin/javy-plugin-kubewarden.wasm
 ```
