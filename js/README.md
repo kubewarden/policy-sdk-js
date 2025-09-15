@@ -205,7 +205,7 @@ Reads and parses the incoming Kubernetes admission request.
 - `getResource(request: GetResourceRequest)`: Get a specific resource
 - `listResourcesByNamespace(request: ListResourcesRequest)`: List resources in namespace
 - `listAllResources(request: ListResourcesRequest)`: List all resources
-- `canI(request: CanIRequest)`: Check permissions
+- `canI(request: CanIRequest)`: Check permissions using the Kubernetes authorization API
 
 #### Cryptographic
 
