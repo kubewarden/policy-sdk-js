@@ -105,11 +105,10 @@ describe('Crypto', () => {
 
       const result = Crypto.verifyCert(cert, certChain);
 
-      // Verify hostCall was called with empty not_after
+      // Verify hostCall was called without not_after field when undefined
       const expectedPayload = JSON.stringify({
         cert,
         cert_chain: certChain,
-        not_after: '',
       });
 
       expect(mockedHostCall).toHaveBeenCalledWith(

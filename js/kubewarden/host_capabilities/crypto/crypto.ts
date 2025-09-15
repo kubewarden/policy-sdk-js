@@ -1,10 +1,6 @@
 import { HostCall } from '../';
 
-import type {
-  Certificate,
-  CertificateVerificationRequest,
-  CertificateVerificationResponse,
-} from './types';
+import type { Certificate, CertificateVerificationResponse } from './types';
 
 /**
  * Crypto Host Capability
@@ -25,11 +21,19 @@ export namespace Crypto {
     certChain: Certificate[],
     notAfter?: string,
   ): CertificateVerificationResponse {
-    const requestObj: CertificateVerificationRequest = {
+    const requestObj: {
+      cert: Certificate;
+      cert_chain: Certificate[];
+      not_after?: string;
+    } = {
       cert,
       cert_chain: certChain,
-      not_after: notAfter || '',
     };
+
+    // Only include not_after if it's provided
+    if (notAfter !== undefined) {
+      requestObj.not_after = notAfter;
+    }
 
     let payload: ArrayBuffer;
     try {
