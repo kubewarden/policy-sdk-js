@@ -85,6 +85,7 @@
   [[ "$output" =~ '"trusted":"true"' ]]
   [[ "$output" =~ '"certEncoding":"Pem"' ]]
   [[ "$output" =~ '"chainLength":"0"' ]]
+  [[ "$output" =~ '"certData":"-----BEGIN CERTIFICATE-----' ]]
   [[ "$output" =~ 'MIICbzCCAhWgAwIBAgIJAOHUuhpytCbWMAoGCCqGSM49BAMCMIGFMQswCQYDVQQG' ]]
 }
 
