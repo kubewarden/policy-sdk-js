@@ -5,11 +5,11 @@ export type CertificateEncoding = 'Der' | 'Pem';
 
 /**
  * Certificate represents a x509 certificate
- * @param data - Certificate data as UTF-8 encoded bytes (array of numbers)
+ * @param data - Certificate data as UTF-8 encoded bytes
  */
 export interface Certificate {
   encoding: CertificateEncoding;
-  data: number[];
+  data: Uint8Array;
 }
 
 /**
@@ -49,7 +49,7 @@ export namespace CertificateUtils {
   export function fromString(certString: string, encoding: CertificateEncoding): Certificate {
     return {
       encoding,
-      data: Array.from(new TextEncoder().encode(certString)), // always UTF-8
+      data: new TextEncoder().encode(certString),
     };
   }
 
@@ -59,6 +59,18 @@ export namespace CertificateUtils {
    * @returns The certificate as a UTF-8 decoded string
    */
   export function toString(cert: Certificate): string {
-    return new TextDecoder('utf-8').decode(new Uint8Array(cert.data));
+    return new TextDecoder('utf-8').decode(cert.data);
+  }
+
+  /**
+   * Converts a Certificate with Uint8Array to a serializable format for JSON
+   * @param cert - The certificate object
+   * @returns Certificate object with data as number array for JSON serialization
+   */
+  export function toSerializable(cert: Certificate): { encoding: string; data: number[] } {
+    return {
+      encoding: cert.encoding,
+      data: Array.from(cert.data),
+    };
   }
 }

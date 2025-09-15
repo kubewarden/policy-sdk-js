@@ -1,6 +1,7 @@
 import { HostCall } from '../';
 
 import type { Certificate, CertificateVerificationResponse } from './types';
+import { CertificateUtils } from './types';
 
 /**
  * Crypto Host Capability
@@ -22,12 +23,12 @@ export namespace Crypto {
     notAfter?: string,
   ): CertificateVerificationResponse {
     const requestObj: {
-      cert: Certificate;
-      cert_chain: Certificate[];
+      cert: { encoding: string; data: number[] };
+      cert_chain: { encoding: string; data: number[] }[];
       not_after?: string;
     } = {
-      cert,
-      cert_chain: certChain,
+      cert: CertificateUtils.toSerializable(cert),
+      cert_chain: certChain.map(CertificateUtils.toSerializable),
     };
 
     // Only include not_after if it's provided

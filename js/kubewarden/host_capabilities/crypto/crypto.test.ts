@@ -22,17 +22,17 @@ describe('Crypto', () => {
     it('should call hostCall with correct parameters and return trusted result', () => {
       const cert: Certificate = {
         encoding: 'Pem',
-        data: [99, 101, 114, 116, 105, 102, 105, 99, 97, 116, 101, 48], // "certificate0"
+        data: new Uint8Array([99, 101, 114, 116, 105, 102, 105, 99, 97, 116, 101, 48]), // "certificate0"
       };
 
       const certChain: Certificate[] = [
         {
           encoding: 'Pem',
-          data: [99, 101, 114, 116, 105, 102, 105, 99, 97, 116, 101, 49], // "certificate1"
+          data: new Uint8Array([99, 101, 114, 116, 105, 102, 105, 99, 97, 116, 101, 49]), // "certificate1"
         },
         {
           encoding: 'Pem',
-          data: [99, 101, 114, 116, 105, 102, 105, 99, 97, 116, 101, 50], // "certificate2"
+          data: new Uint8Array([99, 101, 114, 116, 105, 102, 105, 99, 97, 116, 101, 50]), // "certificate2"
         },
       ];
 
@@ -69,7 +69,7 @@ describe('Crypto', () => {
     it('should handle untrusted certificate', () => {
       const cert: Certificate = {
         encoding: 'Der',
-        data: [98, 97, 100, 99, 101, 114, 116], // "badcert"
+        data: new Uint8Array([98, 97, 100, 99, 101, 114, 116]), // "badcert"
       };
 
       const certChain: Certificate[] = [];
@@ -91,7 +91,7 @@ describe('Crypto', () => {
     it('should handle empty not_after when undefined', () => {
       const cert: Certificate = {
         encoding: 'Pem',
-        data: [116, 101, 115, 116], // "test"
+        data: new Uint8Array([116, 101, 115, 116]), // "test"
       };
 
       const certChain: Certificate[] = [];
@@ -128,22 +128,28 @@ describe('Crypto', () => {
 
       const cert: Certificate = {
         encoding: 'Pem',
-        data: [116, 101, 115, 116],
+        data: new Uint8Array([116, 101, 115, 116]),
       };
 
       expect(() => Crypto.verifyCert(cert, [])).toThrow('Host call failed');
     });
 
     it('should handle JSON serialization errors', () => {
-      const invalidCert = {
-        encoding: 'Pem',
-        // Create a circular reference to cause JSON.stringify to fail
-        data: [] as any,
-        circular: {} as any,
-      };
-      invalidCert.circular.self = invalidCert;
+      // Mock JSON.stringify to throw an error
+      const originalStringify = JSON.stringify;
+      JSON.stringify = jest.fn(() => {
+        throw new Error('JSON serialization failed');
+      });
 
-      expect(() => Crypto.verifyCert(invalidCert as any, [])).toThrow(/Cannot serialize/);
+      const cert: Certificate = {
+        encoding: 'Pem',
+        data: new Uint8Array([116, 101, 115, 116]),
+      };
+
+      expect(() => Crypto.verifyCert(cert, [])).toThrow(/Cannot serialize/);
+      
+      // Restore original JSON.stringify
+      JSON.stringify = originalStringify;
     });
 
     it('should handle JSON parsing errors in response', () => {
@@ -152,7 +158,7 @@ describe('Crypto', () => {
 
       const cert: Certificate = {
         encoding: 'Pem',
-        data: [116, 101, 115, 116],
+        data: new Uint8Array([116, 101, 115, 116]),
       };
 
       expect(() => Crypto.verifyCert(cert, [])).toThrow(/Failed to decode or parse/);
