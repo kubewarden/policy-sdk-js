@@ -147,7 +147,7 @@ describe('Crypto', () => {
       };
 
       expect(() => Crypto.verifyCert(cert, [])).toThrow(/Cannot serialize/);
-      
+
       // Restore original JSON.stringify
       JSON.stringify = originalStringify;
     });
