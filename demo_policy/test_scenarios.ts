@@ -2,6 +2,7 @@ import type { Pod } from 'kubernetes-types/core/v1';
 
 import { Crypto } from '../js/kubewarden/host_capabilities/crypto/crypto';
 import type { Certificate } from '../js/kubewarden/host_capabilities/crypto/types';
+import { CertificateUtils } from '../js/kubewarden/host_capabilities/crypto/types';
 import { Kubernetes } from '../js/kubewarden/host_capabilities/kubernetes/kubernetes';
 import type { CanIRequest } from '../js/kubewarden/host_capabilities/kubernetes/types';
 import { Network } from '../js/kubewarden/host_capabilities/net/network';
@@ -529,7 +530,6 @@ export function handleSigstoreVerifyGithubActionsFailure(): Validation.Validatio
  * Handles crypto certificate verification success scenario
  */
 export function handleCryptoVerifyCertSuccess(): Validation.ValidationResponse {
-  // Non-CA certificate (end-entity)
   const certString = `-----BEGIN CERTIFICATE-----
 MIICbzCCAhWgAwIBAgIJAOHUuhpytCbWMAoGCCqGSM49BAMCMIGFMQswCQYDVQQG
 EwJERTEQMA4GA1UECAwHQmF2YXJpYTESMBAGA1UEBwwJTnVyZW1iZXJnMRMwEQYD
@@ -547,10 +547,7 @@ ZLADjOXvUdmrRej3qXMCWVYCIClFFiL/JpzP9/ZCTzs1XjePGjIhMAgs1Up6yVg8
 kLQM
 -----END CERTIFICATE-----`;
 
-  const cert: Certificate = {
-    encoding: 'Pem',
-    data: Array.from(new TextEncoder().encode(certString)),
-  };
+  const cert: Certificate = CertificateUtils.fromString(certString, 'Pem');
 
   // Empty certificate chain - certificate is assumed trusted when chain is empty
   const certChain: Certificate[] = [];
@@ -560,13 +557,13 @@ kLQM
   const result = Crypto.verifyCert(cert, certChain, notAfter);
 
   return new Validation.ValidationResponse(
-    result.trusted,
-    result.trusted ? undefined : result.reason,
+    result.trusted || false,
+    result.trusted ? undefined : result.reason || 'Certificate verification failed',
     undefined,
     undefined,
     {
-      trusted: result.trusted.toString(),
-      reason: result.reason || '',
+      trusted: (result.trusted || false).toString(),
+      reason: result.reason || 'Certificate verification failed',
       certEncoding: cert.encoding,
       chainLength: certChain.length.toString(),
       notAfter,
@@ -579,10 +576,7 @@ kLQM
  * Handles crypto certificate verification failure scenario
  */
 export function handleCryptoVerifyCertFailure(): Validation.ValidationResponse {
-  const invalidCert: Certificate = {
-    encoding: 'Pem',
-    data: Array.from(new TextEncoder().encode('invalid certificate data')),
-  };
+  const invalidCert: Certificate = CertificateUtils.fromString('invalid certificate data', 'Pem');
 
   const certChain: Certificate[] = [];
   const notAfter = '2020-01-01T00:00:00Z'; // expired date
@@ -594,7 +588,7 @@ export function handleCryptoVerifyCertFailure(): Validation.ValidationResponse {
     undefined,
     undefined,
     {
-      trusted: result.trusted.toString(),
+      trusted: (result.trusted || false).toString(),
       reason: result.reason || 'Expected failure',
       certEncoding: invalidCert.encoding,
       chainLength: certChain.length.toString(),
