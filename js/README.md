@@ -48,6 +48,9 @@ function validate() {
 
 ### Using Host Capabilities
 
+> [!IMPORTANT]  
+> Logging to `stdout` or `stderr` will break your policy. Always use `console.error()` for logging instead of `console.log()` to avoid policy failures.
+
 The SDK provides access to Kubewarden's host capabilities:
 
 #### Network Operations
@@ -57,7 +60,7 @@ import { hostCapabilities } from 'kubewarden-policy-sdk';
 
 // DNS lookup
 const dnsResult = hostCapabilities.Net.lookupHost('example.com');
-console.log('IPs:', dnsResult.ips);
+console.error('IPs:', dnsResult.ips);
 ```
 
 #### OCI Registry Operations
@@ -67,7 +70,7 @@ import { hostCapabilities } from 'kubewarden-policy-sdk';
 
 // Get OCI manifest
 const manifest = hostCapabilities.OciManifest.getManifest('registry.io/image:tag');
-console.log('Manifest:', manifest);
+console.error('Manifest:', manifest);
 
 // Verify image signatures
 const verificationResult = hostCapabilities.OciSignatureVerifier.verifyPubKeysImage(
@@ -212,6 +215,8 @@ Reads and parses the incoming Kubernetes admission request.
 - `verifyCert(cert: Certificate, certChain: Certificate[], notAfter?: string)`: Verify certificates
 - `CertificateUtils.fromString(certString: string, encoding: CertificateEncoding)`: Create certificate from string
 - `CertificateUtils.toString(cert: Certificate)`: Convert certificate to string
+
+For complete documentation of all available host capabilities, see the [Kubewarden Host Capabilities Reference](https://docs.kubewarden.io/reference/spec/host-capabilities/intro-host-capabilities).
 
 ## Building Policies
 
