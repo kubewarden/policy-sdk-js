@@ -49,7 +49,7 @@ function validate() {
 ### Using Host Capabilities
 
 > [!IMPORTANT]  
-> Logging to `stdout` or `stderr` will break your policy. Always use `console.error()` for logging instead of `console.log()` to avoid policy failures.
+> Logging to `stdout` will break your policy. Always use `console.error()` for logging instead of `console.log()` to avoid policy failures.
 
 The SDK provides access to Kubewarden's host capabilities:
 
