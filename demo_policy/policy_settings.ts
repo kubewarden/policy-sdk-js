@@ -33,6 +33,8 @@ export class PolicySettings {
       'sigstore-verify-keyless-prefix-failure',
       'sigstore-verify-github-actions-success',
       'sigstore-verify-github-actions-failure',
+      'crypto-verify-cert-success',
+      'crypto-verify-cert-failure',
     ];
 
     if (this.testScenario && !knownScenarios.includes(this.testScenario)) {

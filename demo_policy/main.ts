@@ -28,6 +28,8 @@ import {
   handleSigstoreVerifyKeylessPrefixFailure,
   handleSigstoreVerifyGithubActionsSuccess,
   handleSigstoreVerifyGithubActionsFailure,
+  handleCryptoVerifyCertFailure,
+  handleCryptoVerifyCertSuccess,
 } from './test_scenarios';
 
 declare function policyAction(): string;
@@ -139,6 +141,14 @@ function validate() {
     }
     case 'sigstore-verify-github-actions-failure': {
       response = handleSigstoreVerifyGithubActionsFailure();
+      break;
+    }
+    case 'crypto-verify-cert-success': {
+      response = handleCryptoVerifyCertSuccess();
+      break;
+    }
+    case 'crypto-verify-cert-failure': {
+      response = handleCryptoVerifyCertFailure();
       break;
     }
     default: {

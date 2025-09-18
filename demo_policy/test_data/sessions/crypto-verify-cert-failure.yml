@@ -1,0 +1,13 @@
+- type: Exchange
+  request: |
+    !CryptoIsCertificateTrusted
+    request:
+      cert:
+        encoding: Pem
+        data: [105,110,118,97,108,105,100,32,99,101,114,116,105,102,105,99,97,116,101,32,100,97,116,97]
+      cert_chain: []
+      not_after: "2020-01-01T00:00:00Z"
+  response:
+    type: Error
+    message: 'invalid PEM provided: header not found'
+

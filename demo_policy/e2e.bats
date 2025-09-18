@@ -72,6 +72,34 @@
     [[ "$output" =~ '"repo":"untrusted-repo"' ]]
 }
 
+@test "crypto verify cert - should successfully verify trusted certificate" {
+  run kwctl run annotated-policy.wasm \
+    -r ./test_data/no_privileged_containers.json \
+    --settings-json '{"testScenario": "crypto-verify-cert-success"}' \
+    --replay-host-capabilities-interactions ./test_data/sessions/crypto-verify-cert-success.yml \
+    --allow-context-aware
+
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ '"allowed":true' ]]
+  [[ "$output" =~ '"trusted":"true"' ]]
+  [[ "$output" =~ '"certEncoding":"Pem"' ]]
+  [[ "$output" =~ '"chainLength":"0"' ]]
+  [[ "$output" =~ '"certData":"-----BEGIN CERTIFICATE-----' ]]
+  [[ "$output" =~ 'MIICbzCCAhWgAwIBAgIJAOHUuhpytCbWMAoGCCqGSM49BAMCMIGFMQswCQYDVQQG' ]]
+}
+
+@test "crypto verify cert - should fail verification for invalid certificate" {
+  run kwctl run annotated-policy.wasm \
+    -r ./test_data/no_privileged_containers.json \
+    --settings-json '{"testScenario": "crypto-verify-cert-failure"}' \
+    --replay-host-capabilities-interactions ./test_data/sessions/crypto-verify-cert-failure.yml \
+    --allow-context-aware
+  echo "output = ${output}"
+  [ "$status" -eq 0 ]
+  [[ "$output" =~ "invalid PEM provided: header not found" ]]
+}
+
 @test "kubernetes can i - should allow pod creation in default namespace" {
     run kwctl run annotated-policy.wasm -r ./test_data/no_privileged_containers.json --settings-json '{"testScenario": "can-i-success"}' --replay-host-capabilities-interactions ./test_data/sessions/can-i-success.yml --allow-context-aware
     echo "output = ${output}"
