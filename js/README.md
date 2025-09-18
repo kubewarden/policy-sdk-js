@@ -4,7 +4,7 @@
 
 # Kubewarden Policy SDK for JavaScript/TypeScript
 
-> > [!WARNING] The SDK is experimental and under active development.
+> [!WARNING] The SDK is experimental and under active development.
 
 The official JavaScript/TypeScript SDK for writing [Kubewarden](https://kubewarden.io/) policies. This SDK allows you to write Kubernetes admission policies using TypeScript/JavaScript that compile to WebAssembly modules.
 
