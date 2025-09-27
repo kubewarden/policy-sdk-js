@@ -12,7 +12,7 @@ export namespace Crypto {
    * expiration and validation time of the certificate.
    * @param cert - PEM/DER-encoded certificate to verify
    * @param certChain - list of PEM/DER-encoded certs, ordered by trust usage
-   *   (intermediates first, root last). If empty, certificate is assumed trusted.
+   *   (intermediates first, root last). If empty, the Mozilla's CA is used.
    * @param notAfter - string in RFC 3339 time format, to check expiration against.
    *   If undefined, certificate is assumed never expired.
    * @returns CertificateVerificationResponse
