@@ -1,0 +1,9 @@
+package kubewarden:wasip2@0.1.0;
+
+interface host {
+    call: func(binding: string, namespace: string, operation: string, message: list<u8>)-> result<bool, string>;
+}
+
+world wasip2 {
+    export host;
+}
