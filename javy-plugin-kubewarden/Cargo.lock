@@ -350,7 +350,7 @@ dependencies = [
 
 [[package]]
 name = "javy-plugin-kubewarden"
-version = "0.1.1"
+version = "0.2.0"
 dependencies = [
  "javy-plugin-api",
  "wit-bindgen",
