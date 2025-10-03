@@ -1,9 +1,10 @@
 use javy_plugin_api::{
+    Config,
     javy::{
-        quickjs::{prelude::Func, Error, Object},
         Runtime,
+        quickjs::{Error, Object, prelude::Func},
     },
-    javy_plugin, Config,
+    javy_plugin,
 };
 
 wit_bindgen::generate!({
