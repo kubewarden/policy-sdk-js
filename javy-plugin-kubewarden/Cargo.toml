@@ -7,9 +7,6 @@ version = "0.1.1"
 crate-type = ["cdylib"]
 name = "javy_plugin_kubewarden"
 
-[package.metadata.component.target.dependencies]
-"kubewarden:wasip2" = { path = "./wit/kubewarden-wasip2/world.wit" }
-
 [dependencies]
 javy-plugin-api = "4.0"
 wit-bindgen = "0.46"
