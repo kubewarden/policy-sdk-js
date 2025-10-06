@@ -8,7 +8,6 @@ world kubewarden-plugin {
     export compile-src: func(src: list<u8>) -> result<list<u8>, string>;
     export initialize-runtime: func();
     export invoke: func(bytecode: list<u8>, function: option<string>);
-    import policy-action: func() -> result<_, string>;
 
     import host;
 }
