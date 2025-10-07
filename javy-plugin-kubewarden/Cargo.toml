@@ -8,5 +8,5 @@ crate-type = ["cdylib"]
 name = "javy_plugin_kubewarden"
 
 [dependencies]
-javy-plugin-api = "4.0"
+javy-plugin-api = "4.1"
 wit-bindgen = "0.46"

@@ -324,9 +324,9 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 
 [[package]]
 name = "javy"
-version = "5.0.0"
+version = "5.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0e010b178a04b16c4b9a2578ea4df4e7061a1265da9183085cd69b445e6bbd5c"
+checksum = "ca2cf1d0173606e47b565992ef33486935b83da7f2d615a02544c2ae68816dba"
 dependencies = [
  "anyhow",
  "bitflags",
@@ -340,9 +340,9 @@ dependencies = [
 
 [[package]]
 name = "javy-plugin-api"
-version = "4.0.0"
+version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d176cc2dccf787bcc60d2858a063e2646daffbddd3d054d4208cad018954f81a"
+checksum = "9472c899e3e601b7fe9fa21129f964b83f12fec6319e190244a0619a2631c58c"
 dependencies = [
  "anyhow",
  "javy",
