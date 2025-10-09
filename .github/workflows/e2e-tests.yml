@@ -23,7 +23,7 @@ jobs:
           set -e
 
           INSTALL_DIR=$HOME/.javy
-          VERSION="v5.0.4"
+          VERSION="v7.0.1"
 
           mkdir -p $INSTALL_DIR
           curl -sL https://github.com/bytecodealliance/javy/releases/download/${VERSION}/javy-x86_64-linux-${VERSION}.gz -o $INSTALL_DIR/javy.gz
