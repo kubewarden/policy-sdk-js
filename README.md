@@ -23,6 +23,7 @@ The policy demonstrates that it's possible to perform validation and make use of
 during policy evaluation.
 
 ## Project Structure
+
 The project is organized into the following components:
 
 - **`js/`**: The core TypeScript SDK.
@@ -34,18 +35,18 @@ The project is organized into the following components:
 The policy requires the following tools to be installed on the host machine:
 
 - **Rust**: The Rust compiler is required to build the Kubewarden Javy plugin.
-  The `wasm32-wasip1` target must be added. It's recommended to use
+  The `wasm32-wasip2` target must be added. It's recommended to use
   [rustup](https://www.rust-lang.org/tools/install).
 - **TypeScript Compiler (`tsc`)**: Required to compile the TypeScript files into
   JavaScript.
 - **npm**: Required to install the project dependencies.
 - **[Javy](https://github.com/bytecodealliance/javy/releases)**: The compiler
-  that transforms the JavaScript code into a WebAssembly module.
+  that transforms the JavaScript code into a WebAssembly module. Version 7.0.0 is recommended.
 - `clang`: required to build the quickjs related Rust crates.
 - **[kwctl](https://github.com/kubewarden/kwctl/)**: Required to run the
   final policy.
 - **[`bats`](https://github.com/bats-core/bats-core)**: Required to run
-  the end-to-end tests. Install bats locally using the [official installation instructions](https://bats-core.readthedocs.io/en/stable/installation.html) 
+  the end-to-end tests. Install bats locally using the [official installation instructions](https://bats-core.readthedocs.io/en/stable/installation.html)
 - **[`jest`](https://jestjs.io/docs/getting-started)**: Required to run unit tests.
 
 ## Plugin Location
