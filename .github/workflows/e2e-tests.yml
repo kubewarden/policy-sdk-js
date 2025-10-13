@@ -15,7 +15,7 @@ jobs:
       - name: Install kwctl
         uses: kubewarden/github-actions/kwctl-installer@v4.5.8
         with:
-          KWCTL_VERSION: v1.30.0-beta1
+          KWCTL_VERSION: v1.30.0-beta2
       - name: Install javy
         shell: bash
         run: |
