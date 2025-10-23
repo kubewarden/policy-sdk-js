@@ -62,7 +62,7 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       
       - name: Install dependencies
-        uses: kubewarden/github-actions/policy-gh-action-dependencies@5e22c63afd22d04a802a7a0463f66ffda6c3c71a # v4.5.7
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@605a03917fbc6b4b523145a1a78cf72a680f5f36 # v4.5.12
 
       - name: Install javy
         env:
@@ -78,7 +78,7 @@ jobs:
         run: make build-plugin 
 
       # Setup .npmrc file to publish to npm
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
