@@ -12,7 +12,7 @@ jobs:
   ci:
     # A branch is required, and cannot be dynamic - https://github.com/actions/runner/issues/1493
     uses: ./.github/workflows/ci.yml
-  e2e: 
+  e2e:
     uses: ./.github/workflows/e2e-tests.yml
 
   release:
@@ -55,7 +55,7 @@ jobs:
               name: `${TAG_NAME}`,
               prerelease: `${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}`
             });
-  
+
   publish:
     name: Publish on npm
     runs-on: ubuntu-latest
@@ -65,7 +65,7 @@ jobs:
       id-token: write # Required for npm provenance
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      
+
       - name: Install dependencies
         uses: kubewarden/github-actions/policy-gh-action-dependencies@605a03917fbc6b4b523145a1a78cf72a680f5f36 # v4.5.12
 
@@ -80,24 +80,24 @@ jobs:
           echo $INSTALL_DIR >> $GITHUB_PATH
 
       - name: Build Javy plugin
-        run: make build-plugin 
+        run: make build-plugin
 
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
-          node-version: '22.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "22.x"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install npm dependencies in js directory
         run: |
           cd js
           npm ci
-      
+
       - name: Build package
         run: |
           cd js
           npm run build
-      
+
       - name: Publish to npm
         run: |
           cd js
