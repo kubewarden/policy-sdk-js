@@ -3,6 +3,11 @@ on:
   push:
     tags:
       - "v*"
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
 jobs:
   ci:
     # A branch is required, and cannot be dynamic - https://github.com/actions/runner/issues/1493
@@ -97,5 +102,3 @@ jobs:
         run: |
           cd js
           npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
