@@ -9,4 +9,4 @@ name = "javy_plugin_kubewarden"
 
 [dependencies]
 javy-plugin-api = "4.1"
-wit-bindgen = "0.47"
+wit-bindgen = "0.48"
