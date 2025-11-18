@@ -78,18 +78,14 @@ jobs:
         run: |
           #!/bin/bash
           set -e
-
           INSTALL_DIR=$HOME/.javy
           VERSION="v7.0.1"
-
           mkdir -p $INSTALL_DIR
           curl -sL https://github.com/bytecodealliance/javy/releases/download/${VERSION}/javy-x86_64-linux-${VERSION}.gz -o $INSTALL_DIR/javy.gz
           gzip -d -c $INSTALL_DIR/javy.gz > $INSTALL_DIR/javy
           rm $INSTALL_DIR/javy.gz
-
           chmod 755 $INSTALL_DIR/javy
           echo $INSTALL_DIR >> $GITHUB_PATH
-
           $INSTALL_DIR/javy -V
 
       - name: Build Javy plugin
@@ -105,6 +101,19 @@ jobs:
         run: |
           cd js
           npm ci
+
+      - name: Verify git tag matches package.json version
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          PKG_VERSION=$(jq -r '.version' js/package.json)
+          if [ "$TAG" != "v$PKG_VERSION" ]; then
+            echo "Version mismatch!"
+            echo "Tag: $TAG"
+            echo "package.json: v$PKG_VERSION"
+            exit 1
+          fi
+          echo "Tag matches package.json version."
 
       - name: Build package
         run: |
