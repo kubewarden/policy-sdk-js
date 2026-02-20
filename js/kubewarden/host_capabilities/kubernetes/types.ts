@@ -6,6 +6,30 @@ export interface ListResourcesByNamespaceRequest {
   namespace: string;
   label_selector?: string | null;
   field_selector?: string | null;
+  /**
+   * A list of fields to include in the response.
+   *
+   * If strictly defined, the host will prune the Kubernetes resource to contain *only*
+   * the specified fields, reducing memory usage and serialization overhead.
+   *
+   * # Behavior
+   * - **Dot Notation:** Use `.` to traverse nested objects (e.g., `metadata.name`).
+   * - **Implicit Arrays:** Paths automatically traverse through arrays. A path like
+   *   `spec.containers.image` will include the `image` field for *every* item in the
+   *   `spec.containers` list.
+   * - **Allow-List:** Fields not specified in the mask are discarded. If the list is
+   *   empty or `null`, the full resource is returned.
+   *
+   * # Example
+   * ```typescript
+   * [
+   *   "metadata.name",
+   *   "metadata.namespace",
+   *   "spec.containers.image"
+   * ]
+   * ```
+   */
+  field_masks?: string[] | null;
 }
 
 export interface ListAllResourcesRequest {
@@ -13,6 +37,30 @@ export interface ListAllResourcesRequest {
   kind: string;
   label_selector?: string | null;
   field_selector?: string | null;
+  /**
+   * A list of fields to include in the response.
+   *
+   * If strictly defined, the host will prune the Kubernetes resource to contain *only*
+   * the specified fields, reducing memory usage and serialization overhead.
+   *
+   * # Behavior
+   * - **Dot Notation:** Use `.` to traverse nested objects (e.g., `metadata.name`).
+   * - **Implicit Arrays:** Paths automatically traverse through arrays. A path like
+   *   `spec.containers.image` will include the `image` field for *every* item in the
+   *   `spec.containers` list.
+   * - **Allow-List:** Fields not specified in the mask are discarded. If the list is
+   *   empty or `null`, the full resource is returned.
+   *
+   * # Example
+   * ```typescript
+   * [
+   *   "metadata.name",
+   *   "metadata.namespace",
+   *   "spec.containers.image"
+   * ]
+   * ```
+   */
+  field_masks?: string[] | null;
 }
 
 export interface GetResourceRequest {
@@ -21,6 +69,30 @@ export interface GetResourceRequest {
   name: string;
   namespace?: string | null;
   disable_cache: boolean;
+  /**
+   * A list of fields to include in the response.
+   *
+   * If strictly defined, the host will prune the Kubernetes resource to contain *only*
+   * the specified fields, reducing memory usage and serialization overhead.
+   *
+   * # Behavior
+   * - **Dot Notation:** Use `.` to traverse nested objects (e.g., `metadata.name`).
+   * - **Implicit Arrays:** Paths automatically traverse through arrays. A path like
+   *   `spec.containers.image` will include the `image` field for *every* item in the
+   *   `spec.containers` list.
+   * - **Allow-List:** Fields not specified in the mask are discarded. If the list is
+   *   empty or `null`, the full resource is returned.
+   *
+   * # Example
+   * ```typescript
+   * [
+   *   "metadata.name",
+   *   "metadata.namespace",
+   *   "spec.containers.image"
+   * ]
+   * ```
+   */
+  field_masks?: string[] | null;
 }
 
 export interface CanIRequest {
