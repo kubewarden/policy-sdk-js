@@ -1,0 +1,14 @@
+{
+  "source": {
+    "include": [
+      "index.ts",
+      "protocol.ts",
+      "kubewarden"
+    ],
+    "includePattern": ".+\\.ts$"
+  },
+  "plugins": [],
+  "opts": {
+    "recurse": true
+  }
+}
