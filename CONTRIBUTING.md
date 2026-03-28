@@ -18,10 +18,14 @@ When a tag is pushed, the following happens automatically:
 - **GitHub release** is published from the draft
 
 ## GitHub Actions
-For some workflows, `NPM_TOKEN` needs read and write permissions (e.g: for npm
-provenance and publishing); if you have forked the repository, you may need to
-change "settings -> actions -> general -> workflow permissions" to "Read and
-write permissions".
+The release workflow publishes to npm using GitHub OIDC trusted publishing and
+`npm publish --provenance`; no `NPM_TOKEN` is required for the upstream
+repository release path.
+
+If you have forked the repository and want to run publish workflows from your
+fork, ensure your fork has workflow permissions set to "Read and write
+permissions" at "Settings -> Actions -> General" and that npm trusted
+publishing is configured for your fork/workflow.
 
 Also, given how the release and release-drafter workflows work, they need git
 tags present; push the tags from origin to your fork.
