@@ -1,8 +1,12 @@
-.PHONY: build unit-tests clean
+.PHONY: build docs unit-tests clean
 
 build:
 	npm install
 	npm run build
+
+docs:
+	rm -rf ../docs
+	npm run docs:generate
 
 unit-tests:
 	npm run test

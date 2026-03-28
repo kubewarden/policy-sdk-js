@@ -7,6 +7,9 @@
 
 This repository contains the TypeScript SDK for writing Kubewarden policies, along with a demo policy that demonstrates its usage.
 
+Developer API documentation is published at:
+https://kubewarden.github.io/policy-sdk-js/
+
 The policy is written using TypeScript, which is then transpiled to JavaScript,
 which is finally compiled to WebAssembly.
 
