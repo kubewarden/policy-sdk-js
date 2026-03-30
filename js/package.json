@@ -1,5 +1,5 @@
 {
-  "name": "kubewarden-policy-sdk",
+  "name": "@kubewarden/policy-sdk",
   "version": "0.2.0",
   "license": "Apache-2.0",
   "main": "dist/bundle.js",
