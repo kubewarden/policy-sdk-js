@@ -95,6 +95,7 @@ jobs:
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version: "24.x"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install npm dependencies in js directory
         run: |
@@ -120,8 +121,6 @@ jobs:
           npm run build
 
       - name: Publish to npm
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
         run: |
           cd js
-          npm publish --provenance --access public --registry=https://registry.npmjs.org/
+          npm publish --provenance --access public
