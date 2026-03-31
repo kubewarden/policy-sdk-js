@@ -12,5 +12,6 @@
     "skipLibCheck": true,
     "declaration": true
   },
-  "include": ["*.ts", "kubewarden/**/*.ts", "demo_policy/main.ts"]
+  "include": ["*.ts", "kubewarden/**/*.ts", "demo_policy/main.ts"],
+  "exclude": ["**/*.test.ts"]
 }
