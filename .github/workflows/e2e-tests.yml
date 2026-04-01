@@ -10,10 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Install dependencies
-        uses: kubewarden/github-actions/policy-gh-action-dependencies@f1695ca9a575bf58b85d6c3652c7ff7d1d12ec24 # v4.5.16
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
       # TODO: remove once kwctl 1.30.0 is released
       - name: Install kwctl
-        uses: kubewarden/github-actions/kwctl-installer@f1695ca9a575bf58b85d6c3652c7ff7d1d12ec24 # v4.5.16
+        uses: kubewarden/github-actions/kwctl-installer@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
       - name: Install javy
         shell: bash
         run: |
