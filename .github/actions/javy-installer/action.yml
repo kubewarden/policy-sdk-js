@@ -1,0 +1,38 @@
+name: "Install Javy"
+description: "Download and install the Javy CLI"
+
+inputs:
+  version:
+    description: "Javy version to install (e.g. v7.0.1)"
+    required: false
+    default: "v7.0.1"
+  checksum:
+    description: "Expected SHA-256 checksum of the downloaded archive (e.g. sha256:<hex>). Skipped when empty."
+    required: false
+    default: "sha256:361cc2375077380cda6e002545cfa831f2b47302becec0baebf54254831f7b9e"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Javy
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+        CHECKSUM: ${{ inputs.checksum }}
+      run: |
+        set -e
+
+        INSTALL_DIR="$HOME/.javy"
+        mkdir -p "$INSTALL_DIR"
+
+        curl -sL "https://github.com/bytecodealliance/javy/releases/download/${VERSION}/javy-x86_64-linux-${VERSION}.gz" \
+          -o "$INSTALL_DIR/javy.gz"
+        echo "${CHECKSUM#sha256:}  $INSTALL_DIR/javy.gz" | sha256sum -c -
+
+        gzip -d -c "$INSTALL_DIR/javy.gz" > "$INSTALL_DIR/javy"
+        rm "$INSTALL_DIR/javy.gz"
+
+        chmod 755 "$INSTALL_DIR/javy"
+        echo "$INSTALL_DIR" >> "$GITHUB_PATH"
+
+        "$INSTALL_DIR/javy" -V
