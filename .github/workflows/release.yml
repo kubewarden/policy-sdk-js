@@ -74,19 +74,7 @@ jobs:
         uses: kubewarden/github-actions/policy-gh-action-dependencies@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
 
       - name: Install javy
-        shell: bash
-        run: |
-          #!/bin/bash
-          set -e
-          INSTALL_DIR=$HOME/.javy
-          VERSION="v7.0.1"
-          mkdir -p $INSTALL_DIR
-          curl -sL https://github.com/bytecodealliance/javy/releases/download/${VERSION}/javy-x86_64-linux-${VERSION}.gz -o $INSTALL_DIR/javy.gz
-          gzip -d -c $INSTALL_DIR/javy.gz > $INSTALL_DIR/javy
-          rm $INSTALL_DIR/javy.gz
-          chmod 755 $INSTALL_DIR/javy
-          echo $INSTALL_DIR >> $GITHUB_PATH
-          $INSTALL_DIR/javy -V
+        uses: ./.github/actions/javy-installer
 
       - name: Build Javy plugin
         run: make build-plugin
