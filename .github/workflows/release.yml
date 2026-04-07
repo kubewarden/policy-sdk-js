@@ -153,8 +153,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "Kubewarden policy-sdk-js bot"
+          git config --global user.email "kubewarden-policy-sdk-js-bot@users.noreply.github.com>
 
           if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
             git fetch origin gh-pages
