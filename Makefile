@@ -1,4 +1,4 @@
-.PHONY: all build-plugin build-policy e2e-tests unit-tests all-tests
+.PHONY: all build-plugin build-policy build-docs e2e-tests unit-tests all-tests
 
 all: build-plugin build-policy
 
@@ -7,6 +7,9 @@ build-plugin:
 
 build-policy:
 	$(MAKE) -C demo_policy annotated-policy.wasm
+
+build-docs:
+	$(MAKE) -C js docs
 
 e2e-tests: all
 	$(MAKE) -C demo_policy e2e-tests

@@ -112,3 +112,58 @@ jobs:
         run: |
           cd js
           npm publish --provenance --access public
+
+  docs:
+    name: Publish docs
+    runs-on: ubuntu-latest
+    needs: [release]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: "24.x"
+
+      - name: Install npm dependencies in js directory
+        run: |
+          cd js
+          npm ci
+
+      - name: Build SDK docs
+        run: make build-docs
+
+      - name: Publish docs to gh-pages branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config --global user.name "Kubewarden policy-sdk-js bot"
+          git config --global user.email "kubewarden-policy-sdk-js-bot@users.noreply.github.com>
+
+          if git ls-remote --exit-code --heads origin gh-pages > /dev/null 2>&1; then
+            git fetch origin gh-pages
+            git worktree add /tmp/gh-pages origin/gh-pages
+          else
+            git worktree add -b gh-pages /tmp/gh-pages
+          fi
+
+          rm -rf /tmp/gh-pages/*
+          cp -R docs/. /tmp/gh-pages/
+          touch /tmp/gh-pages/.nojekyll
+
+          cd /tmp/gh-pages
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No docs changes to publish"
+          else
+            git commit -m "docs: update SDK docs for ${GITHUB_REF_NAME}"
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:gh-pages
+          fi
+
+          cd -
+          git worktree remove /tmp/gh-pages --force
+
