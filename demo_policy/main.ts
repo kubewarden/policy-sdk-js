@@ -1,3 +1,4 @@
+import { Logging } from '../js/kubewarden/logging';
 import { Validation } from '../js/kubewarden/validation';
 import { writeOutput } from '../js/protocol';
 
@@ -34,6 +35,12 @@ import {
 
 declare function policyAction(): string;
 
+const LOG_CONTEXT = 'demo-policy';
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
 /**
  * Validates a Kubernetes admission request to ensure that privileged containers
  * are not allowed unless they are in an ignored namespace.
@@ -44,7 +51,7 @@ function validate() {
   const settings = validationRequest.settings as PolicySettings;
   let response: Validation.ValidationResponse;
 
-  console.error('Settings:', JSON.stringify(settings));
+  Logging.debug(LOG_CONTEXT, 'Settings loaded', { settings });
 
   switch (settings.testScenario) {
     case 'oci-manifest-digest-success': {
@@ -167,7 +174,7 @@ function validateSettings() {
     const response = settings.validate();
     writeOutput(response);
   } catch (err) {
-    console.error('validateSettings error:', err);
+    Logging.error(LOG_CONTEXT, 'validateSettings error', { error: errorMessage(err) });
     const response = new Validation.SettingsValidationResponse(false, `${err}`);
     writeOutput(response);
   }
@@ -175,7 +182,7 @@ function validateSettings() {
 
 try {
   const action = policyAction();
-  console.error('Action:', action);
+  Logging.debug(LOG_CONTEXT, 'Policy action selected', { action });
 
   switch (action) {
     case 'validate': {
@@ -187,13 +194,13 @@ try {
       break;
     }
     default: {
-      console.error('Unknown action:', action);
+      Logging.error(LOG_CONTEXT, 'Unknown policy action', { action });
       const response = new Validation.ValidationResponse(false, 'wrong invocation');
       writeOutput(response);
     }
   }
 } catch (error) {
-  console.error('error:', error);
+  Logging.error(LOG_CONTEXT, 'Policy invocation failed', { error: errorMessage(error) });
   const response = new Validation.ValidationResponse(false, 'wrong invocation');
   writeOutput(response);
 }

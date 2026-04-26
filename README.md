@@ -54,7 +54,7 @@ The policy requires the following tools to be installed on the host machine:
 
 ## Plugin Location
 
-When you install the SDK as a dependency in your project, the plugin will be available at: `node_modules/kubewarden-policy-sdk/js/plugin/`
+When you install the SDK as a dependency in your project, the plugin will be available at: `node_modules/@kubewarden/policy-sdk/plugin/`
 
 This is the path you'll need to reference when building policies that use this SDK.
 
