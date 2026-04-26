@@ -25,8 +25,7 @@ export namespace HostCall {
 
     if (!isSuccessful) {
       const responseText = new TextDecoder('utf-8').decode(response);
-      console.error('Host call failed: ', responseText);
-      throw new Error('Host call failed');
+      throw new Error(`Host call failed: ${responseText}`);
     }
 
     return response;

@@ -10,9 +10,12 @@ import { Manifest } from '../js/kubewarden/host_capabilities/oci/manifest/manife
 import { ManifestConfig } from '../js/kubewarden/host_capabilities/oci/manifest_config/manifest_config';
 import { ManifestDigest } from '../js/kubewarden/host_capabilities/oci/manifest_digest/manifest_digest';
 import { OciSignatureVerifier } from '../js/kubewarden/host_capabilities/oci/verify_v2/verifier';
+import { Logging } from '../js/kubewarden/logging';
 import { Validation } from '../js/kubewarden/validation';
 
 import type { PolicySettings } from './policy_settings';
+
+const LOG_CONTEXT = 'demo-policy';
 
 /**
  * Handles OCI manifest digest lookup success scenario
@@ -110,7 +113,9 @@ export function handlePrivilegedContainerValidation(
   settings: PolicySettings,
 ): Validation.ValidationResponse {
   if (settings.ignoredNamespaces?.includes(validationRequest.request.namespace || '')) {
-    console.error('Privileged containers are allowed inside of ignored namespace');
+    Logging.info(LOG_CONTEXT, 'Privileged containers are allowed inside ignored namespace', {
+      namespace: validationRequest.request.namespace || '',
+    });
     return Validation.acceptRequest();
   }
 
