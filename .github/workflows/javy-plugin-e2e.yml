@@ -1,0 +1,19 @@
+on:
+  push:
+    paths:
+      - 'javy-plugin-kubewarden/**'
+      - '.github/actions/javy-installer/**'
+      - '.github/workflows/e2e-tests.yml'
+      - '.github/workflows/javy-plugin-e2e.yml'
+  pull_request:
+    paths:
+      - 'javy-plugin-kubewarden/**'
+      - '.github/actions/javy-installer/**'
+      - '.github/workflows/e2e-tests.yml'
+      - '.github/workflows/javy-plugin-e2e.yml'
+
+name: Javy plugin e2e
+
+jobs:
+  e2e-tests:
+    uses: ./.github/workflows/e2e-tests.yml
