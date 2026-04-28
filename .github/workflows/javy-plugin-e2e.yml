@@ -1,0 +1,35 @@
+on:
+  push:
+    paths:
+      - 'javy-plugin-kubewarden/**'
+      - '.github/actions/javy-installer/**'
+      - '.github/workflows/e2e-tests.yml'
+      - '.github/workflows/javy-plugin-e2e.yml'
+  pull_request:
+    paths:
+      - 'javy-plugin-kubewarden/**'
+      - '.github/actions/javy-installer/**'
+      - '.github/workflows/e2e-tests.yml'
+      - '.github/workflows/javy-plugin-e2e.yml'
+
+name: Javy plugin e2e
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Install dependencies
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
+      - name: Install kwctl
+        uses: kubewarden/github-actions/kwctl-installer@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
+      - name: Install javy
+        uses: ./.github/actions/javy-installer
+      - name: Build Javy plugin
+        run: make build-plugin
+      - name: Install npm dependencies in js directory
+        run: |
+          cd js
+          npm install
+      - name: Run policy e2e tests
+        run: make -C demo_policy e2e-tests
