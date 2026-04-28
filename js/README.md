@@ -68,7 +68,7 @@ The SDK provides access to Kubewarden's host capabilities:
 import { Logging, hostCapabilities } from '@kubewarden/policy-sdk';
 
 // DNS lookup
-const dnsResult = hostCapabilities.Net.lookupHost('example.com');
+const dnsResult = hostCapabilities.Network.dnsLookup('example.com');
 Logging.info('example-policy', 'DNS lookup completed', { ips: dnsResult.ips });
 ```
 
@@ -78,7 +78,7 @@ Logging.info('example-policy', 'DNS lookup completed', { ips: dnsResult.ips });
 import { Logging, hostCapabilities } from '@kubewarden/policy-sdk';
 
 // Get OCI manifest
-const manifest = hostCapabilities.OciManifest.getManifest('registry.io/image:tag');
+const manifest = hostCapabilities.Manifest.getOCIManifest('registry.io/image:tag');
 Logging.debug('example-policy', 'OCI manifest fetched', { manifest });
 
 // Verify image signatures
@@ -115,7 +115,7 @@ const pods = hostCapabilities.Kubernetes.listResourcesByNamespace({
 import { hostCapabilities } from '@kubewarden/policy-sdk';
 
 // Verify certificate
-const cert = hostCapabilities.Crypto.CertificateUtils.fromString(
+const cert = hostCapabilities.CertificateUtils.fromString(
   '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----',
   'Pem',
 );
@@ -202,31 +202,31 @@ Reads and parses the incoming Kubernetes admission request.
 
 #### Network
 
-- `lookupHost(hostname: string)`: DNS resolution
+- `Network.dnsLookup(hostname: string)`: DNS resolution
 
 #### Container Registry
 
-- `getManifest(image: string)`: Get OCI manifest
-- `getManifestConfig(image: string)`: Get manifest configuration
-- `getManifestDigest(image: string)`: Get manifest digest
+- `Manifest.getOCIManifest(image: string)`: Get OCI manifest
+- `ManifestConfig.getOCIManifestAndConfig(image: string)`: Get manifest configuration
+- `ManifestDigest.getOCIManifestDigest(image: string)`: Get manifest digest
 
 #### Signature Verifier
 
-- `verifyPubKeysImage(image: string, pubKeys: string[])`: Verify with public keys
-- `verifyKeylessExactMatch(image: string, keyless: KeylessInfo[])`: Keyless verification
-- `verifyKeylessPrefix(image: string, keyless: KeylessPrefixInfo[])`: Prefix-based keyless verification
-- `verifyGithubActions(image: string, owner: string)`: GitHub Actions verification
+- `OciSignatureVerifier.verifyPubKeysImage(image: string, pubKeys: string[])`: Verify with public keys
+- `OciSignatureVerifier.verifyKeylessExactMatch(image: string, keyless: KeylessInfo[])`: Keyless verification
+- `OciSignatureVerifier.verifyKeylessPrefixMatch(image: string, keyless: KeylessPrefixInfo[])`: Prefix-based keyless verification
+- `OciSignatureVerifier.verifyKeylessGithubActions(image: string, owner: string)`: GitHub Actions verification
 
 #### Kubernetes
 
-- `getResource(request: GetResourceRequest)`: Get a specific resource
-- `listResourcesByNamespace(request: ListResourcesRequest)`: List resources in namespace
-- `listAllResources(request: ListResourcesRequest)`: List all resources
-- `canI(request: CanIRequest)`: Check permissions using the Kubernetes authorization API
+- `Kubernetes.getResource(request: GetResourceRequest)`: Get a specific resource
+- `Kubernetes.listResourcesByNamespace(request: ListResourcesRequest)`: List resources in namespace
+- `Kubernetes.listAllResources(request: ListResourcesRequest)`: List all resources
+- `Kubernetes.canI(request: CanIRequest)`: Check permissions using the Kubernetes authorization API
 
 #### Cryptographic
 
-- `verifyCert(cert: Certificate, certChain: Certificate[], notAfter?: string)`: Verify certificates
+- `Crypto.verifyCert(cert: Certificate, certChain: Certificate[], notAfter?: string)`: Verify certificates
 - `CertificateUtils.fromString(certString: string, encoding: CertificateEncoding)`: Create certificate from string
 - `CertificateUtils.toString(cert: Certificate)`: Convert certificate to string
 
