@@ -1,6 +1,6 @@
 [![Sandbox](https://img.shields.io/badge/status-sandbox-red?style=for-the-badge)](https://github.com/kubewarden/community/blob/main/REPOSITORIES.md#sandbox)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache2.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)
-[![npm version](https://badge.fury.io/js/kubewarden-policy-sdk.svg)](https://www.npmjs.com/package/kubewarden-policy-sdk)
+[![npm version](https://img.shields.io/npm/v/@kubewarden/policy-sdk)](https://www.npmjs.com/package/@kubewarden/policy-sdk)
 
 # Kubewarden Policy SDK for JavaScript/TypeScript
 
@@ -12,7 +12,7 @@ The official JavaScript/TypeScript SDK for writing [Kubewarden](https://kubeward
 ## Installation
 
 ```bash
-npm install kubewarden-policy-sdk
+npm install @kubewarden/policy-sdk
 ```
 
 ## Quick Start
@@ -20,7 +20,7 @@ npm install kubewarden-policy-sdk
 ### Basic Policy Structure
 
 ```typescript
-import { Validation, writeOutput } from 'kubewarden-policy-sdk';
+import { Validation, writeOutput } from '@kubewarden/policy-sdk';
 
 function validate() {
   // Read the admission request
@@ -50,28 +50,36 @@ function validate() {
 ### Using Host Capabilities
 
 > [!IMPORTANT]  
-> Logging to `stdout` will break your policy. Always use `console.error()` for logging instead of `console.log()` to avoid policy failures.
+> Logging to `stdout` or `stderr` will break your policy. Use the SDK logging API instead.
+
+```typescript
+import { Logging } from '@kubewarden/policy-sdk';
+
+Logging.info('example-policy', 'request accepted', {
+  namespace: 'default',
+});
+```
 
 The SDK provides access to Kubewarden's host capabilities:
 
 #### Network Operations
 
 ```typescript
-import { hostCapabilities } from 'kubewarden-policy-sdk';
+import { Logging, hostCapabilities } from '@kubewarden/policy-sdk';
 
 // DNS lookup
-const dnsResult = hostCapabilities.Net.lookupHost('example.com');
-console.error('IPs:', dnsResult.ips);
+const dnsResult = hostCapabilities.Network.dnsLookup('example.com');
+Logging.info('example-policy', 'DNS lookup completed', { ips: dnsResult.ips });
 ```
 
 #### OCI Registry Operations
 
 ```typescript
-import { hostCapabilities } from 'kubewarden-policy-sdk';
+import { Logging, hostCapabilities } from '@kubewarden/policy-sdk';
 
 // Get OCI manifest
-const manifest = hostCapabilities.OciManifest.getManifest('registry.io/image:tag');
-console.error('Manifest:', manifest);
+const manifest = hostCapabilities.Manifest.getOCIManifest('registry.io/image:tag');
+Logging.debug('example-policy', 'OCI manifest fetched', { manifest });
 
 // Verify image signatures
 const verificationResult = hostCapabilities.OciSignatureVerifier.verifyPubKeysImage(
@@ -83,7 +91,7 @@ const verificationResult = hostCapabilities.OciSignatureVerifier.verifyPubKeysIm
 #### Kubernetes API Access
 
 ```typescript
-import { hostCapabilities } from 'kubewarden-policy-sdk';
+import { hostCapabilities } from '@kubewarden/policy-sdk';
 
 // Get a Kubernetes resource
 const resource = hostCapabilities.Kubernetes.getResource({
@@ -104,10 +112,10 @@ const pods = hostCapabilities.Kubernetes.listResourcesByNamespace({
 #### Cryptographic Operations
 
 ```typescript
-import { hostCapabilities } from 'kubewarden-policy-sdk';
+import { hostCapabilities } from '@kubewarden/policy-sdk';
 
 // Verify certificate
-const cert = hostCapabilities.Crypto.CertificateUtils.fromString(
+const cert = hostCapabilities.CertificateUtils.fromString(
   '-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----',
   'Pem',
 );
@@ -122,7 +130,7 @@ const verificationResult = hostCapabilities.Crypto.verifyCert(
 ### Complete Example Policy
 
 ```typescript
-import { Validation, writeOutput } from 'kubewarden-policy-sdk';
+import { Validation, writeOutput } from '@kubewarden/policy-sdk';
 import type { Pod } from 'kubernetes-types/core/v1';
 
 interface PolicySettings {
@@ -185,35 +193,40 @@ new ValidationResponse(
 
 Reads and parses the incoming Kubernetes admission request.
 
+### Logging
+
+- `Logging.log(level: Logging.Level, context: string, message: string, fields?: Record<string, unknown>)`: Send a structured log entry to the Kubewarden host.
+- `Logging.trace`, `Logging.debug`, `Logging.info`, `Logging.warn`, `Logging.error`: Convenience helpers for supported log levels.
+
 ### Host Capabilities
 
 #### Network
 
-- `lookupHost(hostname: string)`: DNS resolution
+- `Network.dnsLookup(hostname: string)`: DNS resolution
 
 #### Container Registry
 
-- `getManifest(image: string)`: Get OCI manifest
-- `getManifestConfig(image: string)`: Get manifest configuration
-- `getManifestDigest(image: string)`: Get manifest digest
+- `Manifest.getOCIManifest(image: string)`: Get OCI manifest
+- `ManifestConfig.getOCIManifestAndConfig(image: string)`: Get manifest configuration
+- `ManifestDigest.getOCIManifestDigest(image: string)`: Get manifest digest
 
 #### Signature Verifier
 
-- `verifyPubKeysImage(image: string, pubKeys: string[])`: Verify with public keys
-- `verifyKeylessExactMatch(image: string, keyless: KeylessInfo[])`: Keyless verification
-- `verifyKeylessPrefix(image: string, keyless: KeylessPrefixInfo[])`: Prefix-based keyless verification
-- `verifyGithubActions(image: string, owner: string)`: GitHub Actions verification
+- `OciSignatureVerifier.verifyPubKeysImage(image: string, pubKeys: string[])`: Verify with public keys
+- `OciSignatureVerifier.verifyKeylessExactMatch(image: string, keyless: KeylessInfo[])`: Keyless verification
+- `OciSignatureVerifier.verifyKeylessPrefixMatch(image: string, keyless: KeylessPrefixInfo[])`: Prefix-based keyless verification
+- `OciSignatureVerifier.verifyKeylessGithubActions(image: string, owner: string)`: GitHub Actions verification
 
 #### Kubernetes
 
-- `getResource(request: GetResourceRequest)`: Get a specific resource
-- `listResourcesByNamespace(request: ListResourcesRequest)`: List resources in namespace
-- `listAllResources(request: ListResourcesRequest)`: List all resources
-- `canI(request: CanIRequest)`: Check permissions using the Kubernetes authorization API
+- `Kubernetes.getResource(request: GetResourceRequest)`: Get a specific resource
+- `Kubernetes.listResourcesByNamespace(request: ListResourcesRequest)`: List resources in namespace
+- `Kubernetes.listAllResources(request: ListResourcesRequest)`: List all resources
+- `Kubernetes.canI(request: CanIRequest)`: Check permissions using the Kubernetes authorization API
 
 #### Cryptographic
 
-- `verifyCert(cert: Certificate, certChain: Certificate[], notAfter?: string)`: Verify certificates
+- `Crypto.verifyCert(cert: Certificate, certChain: Certificate[], notAfter?: string)`: Verify certificates
 - `CertificateUtils.fromString(certString: string, encoding: CertificateEncoding)`: Create certificate from string
 - `CertificateUtils.toString(cert: Certificate)`: Convert certificate to string
 
@@ -232,7 +245,7 @@ For complete documentation of all available host capabilities, see the [Kubeward
 1. **Install the SDK**:
 
    ```bash
-   npm install kubewarden-policy-sdk
+   npm install @kubewarden/policy-sdk
    ```
 
 2. **Write your policy** (e.g., `main.ts`)
@@ -256,7 +269,7 @@ For complete documentation of all available host capabilities, see the [Kubeward
 The Javy plugin required for compilation is included in the package at:
 
 ```
-node_modules/kubewarden-policy-sdk/plugin/javy-plugin-kubewarden.wasm
+node_modules/@kubewarden/policy-sdk/plugin/javy-plugin-kubewarden.wasm
 ```
 
 ## Testing

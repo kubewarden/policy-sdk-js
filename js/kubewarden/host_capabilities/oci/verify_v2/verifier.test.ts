@@ -1,10 +1,10 @@
-import { HostCall } from '../..';
+import { HostCall } from '../../host_call';
 
 import type { VerificationResponse, KeylessInfo, KeylessPrefixInfo } from './types';
 import { OciSignatureVerifier } from './verifier';
 
 // Mock the HostCall module
-jest.mock('../..', () => ({
+jest.mock('../../host_call', () => ({
   HostCall: {
     hostCall: jest.fn(),
   },

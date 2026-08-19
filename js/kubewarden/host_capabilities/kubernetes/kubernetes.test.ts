@@ -1,4 +1,4 @@
-import { HostCall } from '../';
+import { HostCall } from '../host_call';
 
 import { Kubernetes } from './kubernetes';
 import type {
@@ -9,7 +9,7 @@ import type {
 } from './types';
 
 // Mock the HostCall
-jest.mock('../', () => ({
+jest.mock('../host_call', () => ({
   HostCall: {
     hostCall: jest.fn(),
   },
