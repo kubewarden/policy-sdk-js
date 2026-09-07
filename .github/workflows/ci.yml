@@ -8,10 +8,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       
       - name: Install dependencies
-        uses: kubewarden/github-actions/policy-gh-action-dependencies@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@143b9e4b11ddc47370482267383586e6f1bc7efe # v7.0.1
 
       - name: Install npm dependencies in js directory
         run: |
@@ -26,10 +26,10 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       
       - name: Install dependencies
-        uses: kubewarden/github-actions/policy-gh-action-dependencies@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@143b9e4b11ddc47370482267383586e6f1bc7efe # v7.0.1
 
       - name: Install npm dependencies in js directory
         run: |
@@ -44,10 +44,10 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       
       - name: Install dependencies
-        uses: kubewarden/github-actions/policy-gh-action-dependencies@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@143b9e4b11ddc47370482267383586e6f1bc7efe # v7.0.1
 
       - name: Install npm dependencies in js directory
         run: |
@@ -60,10 +60,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       
       - name: Install dependencies
-        uses: kubewarden/github-actions/policy-gh-action-dependencies@a97c0700ad65b276f15fda9195937bb0db850dcf # v4.6.4
+        uses: kubewarden/github-actions/policy-gh-action-dependencies@143b9e4b11ddc47370482267383586e6f1bc7efe # v7.0.1
 
       - name: Install npm dependencies in js directory
         run: |

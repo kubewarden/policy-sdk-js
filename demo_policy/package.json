@@ -4,24 +4,24 @@
     "kubernetes-types": "^1.30.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
+    "@eslint/js": "^10.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.0",
-    "eslint": "^9.21.0",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jsdoc": "^62.0.0",
+    "eslint-plugin-jsdoc": "^64.0.0",
     "eslint-plugin-prettier": "^5.2.3",
     "globals": "^17.0.0",
     "husky": "^9.1.7",
     "jest": "^30.0.3",
-    "lint-staged": "^16.0.0",
+    "lint-staged": "^17.0.0",
     "prettier": "^3.5.3",
     "ts-jest": "^29.4.0",
     "ts-loader": "^9.5.2",
     "typescript-eslint": "^8.26.0",
     "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^7.0.0"
   },
   "scripts": {
     "build": "webpack",
