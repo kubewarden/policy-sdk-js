@@ -1,4 +1,4 @@
-import { HostCall } from '../';
+import { HostCall } from '../host_call';
 
 import type {
   GetResourceRequest,

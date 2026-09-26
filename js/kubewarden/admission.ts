@@ -89,9 +89,9 @@ export namespace KubernetesAdmission {
    * @example
    * ```typescript
    * const gvk = new GroupVersionKind("apps", "v1", "Deployment");
-   * console.log(gvk.group); // "apps"
-   * console.log(gvk.version); // "v1"
-   * console.log(gvk.kind); // "Deployment"
+   * const group = gvk.group; // "apps"
+   * const version = gvk.version; // "v1"
+   * const kind = gvk.kind; // "Deployment"
    * ```
    *
    * @public
@@ -116,9 +116,9 @@ export namespace KubernetesAdmission {
    * @example
    * ```typescript
    * const gvr = new GroupVersionResource('apps', 'v1', 'deployments');
-   * console.log(gvr.group); // 'apps'
-   * console.log(gvr.version); // 'v1'
-   * console.log(gvr.resource); // 'deployments'
+   * const group = gvr.group; // 'apps'
+   * const version = gvr.version; // 'v1'
+   * const resource = gvr.resource; // 'deployments'
    * ```
    *
    * @public
